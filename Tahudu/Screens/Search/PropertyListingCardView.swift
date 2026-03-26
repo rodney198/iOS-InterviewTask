@@ -25,6 +25,8 @@ struct PropertyListingCardView: View {
     let onPhoneTap: () -> Void
     let onEmailTap: () -> Void
     let onWhatsAppTap: () -> Void
+    let onSmsTap: () -> Void
+    
 
     var body: some View {
         
@@ -82,12 +84,10 @@ struct PropertyListingCardView: View {
                         .foregroundColor(.secondary)
                     Spacer(minLength: 8)
                     HStack(spacing: 12) {
-                        ContactButton(.phone, action: onPhoneTap)
-                            .clipShape(Rectangle())
-                        ContactButton(.email, action: onEmailTap)
-                            .clipShape(Rectangle())
-                        ContactButton(.whatsApp, action: onWhatsAppTap)
-                            .clipShape(Rectangle())
+                        ForEach(listing.contactOptions, id: \.self) {type in
+                            contactButton(for: type)
+                        }
+
                     }
                 }
                 .padding(.horizontal, 16)
@@ -106,6 +106,24 @@ struct PropertyListingCardView: View {
                 .stroke(Color(UIColor.separator).opacity(0.35), lineWidth: 1)
         )
         .shadow(color: Color.black.opacity(0.06), radius: 8, x: 0, y: 4)
+    }
+    
+    @ViewBuilder
+    private func contactButton(for type: ContactType) -> some View {
+        switch type {
+        case .phone:
+            ContactButton(.phone, action: onPhoneTap)
+                .clipShape(Rectangle())
+        case .email:
+            ContactButton(.email, action: onEmailTap)
+                .clipShape(Rectangle())
+        case .whatsApp:
+            ContactButton(.whatsApp, action: onWhatsAppTap)
+                .clipShape(Rectangle())
+        case .sms:
+            ContactButton(.whatsApp, action: onSmsTap)
+                .clipShape(Rectangle())
+        }
     }
 
     private var footerDivider: some View {
@@ -129,12 +147,30 @@ struct PropertyListingCardView: View {
             .clipped()
 
             HStack(alignment: .top) {
-                verifiedPill
+                ForEach(Array(listing.tagLabels.enumerated()), id: \.offset) { _, label in
+                    tagPill(label)
+                }
                 Spacer(minLength: 0)
                 heartButton
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(8)
         }
+    }
+    
+    private func tagPill(_ text: String) -> some View {
+        let isVerified = text == "VERIFIED"
+        return HStack(spacing: 4) {
+            Text(text)
+                .font(.caption2)
+                .fontWeight(.semibold)
+        }
+        .foregroundColor(.white)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 4)
+        .background(isVerified ? Color.green : Color.black.opacity(0.55))
+        .clipShape(RoundedRectangle(cornerRadius: 4))
+                        
     }
 
     private var verifiedPill: some View {
@@ -204,7 +240,8 @@ struct PropertyListingCardView_Previews: PreviewProvider {
             onHeartTap: {},
             onPhoneTap: {},
             onEmailTap: {},
-            onWhatsAppTap: {}
+            onWhatsAppTap: {},
+            onSmsTap: {}
         )
         .padding()
         .previewLayout(.sizeThatFits)

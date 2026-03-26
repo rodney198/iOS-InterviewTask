@@ -99,9 +99,10 @@ extension SearchListing {
     init(listing: Listing) {
         let tagLabels = listing.tags.map(ListingPresentation.tagLabel(for:))
         let contactOptions = listing.contactOptions.compactMap(ContactType.init(apiRawValue:))
+        let carouselNames = listing.images.map(ListingPresentation.carouselAssetName(for:))
         self.init(
             id: listing.id,
-            carouselImageNames: listing.images,
+            carouselImageNames: carouselNames,
             tagLabels: tagLabels,
             location: listing.location,
             propertyType: listing.type,

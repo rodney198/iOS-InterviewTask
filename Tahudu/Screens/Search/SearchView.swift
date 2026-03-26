@@ -56,7 +56,7 @@ struct SearchView: View {
                                     onHeartTap: { print("Heart tapped — \(listing.id)") },
                                     onPhoneTap: { print("Phone contact — \(listing.id)") },
                                     onEmailTap: { print("Email contact — \(listing.id)") },
-                                    onWhatsAppTap: { print("WhatsApp contact — \(listing.id)") }
+                                    onWhatsAppTap: { print("WhatsApp contact — \(listing.id)") }, onSmsTap: { print("SMS contact — \(listing.id)")}
                                 )
                             }
                         }
