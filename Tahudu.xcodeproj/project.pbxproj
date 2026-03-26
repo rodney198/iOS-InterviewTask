@@ -25,6 +25,7 @@
 		FE0D7FA82F75CB9500F28607 /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FA72F75CB9500F28607 /* Listing.swift */; };
 		FE0D7FAC2F75CCCF00F28607 /* ListingAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FAB2F75CCCF00F28607 /* ListingAPIClient.swift */; };
 		FE0D7FAE2F75D1C400F28607 /* ListingFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FAD2F75D1C400F28607 /* ListingFormatting.swift */; };
+		FE0D7FB02F75D70B00F28607 /* ListingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FAF2F75D70B00F28607 /* ListingsManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		FE0D7FA72F75CB9500F28607 /* Listing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Listing.swift; sourceTree = "<group>"; };
 		FE0D7FAB2F75CCCF00F28607 /* ListingAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingAPIClient.swift; sourceTree = "<group>"; };
 		FE0D7FAD2F75D1C400F28607 /* ListingFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingFormatting.swift; sourceTree = "<group>"; };
+		FE0D7FAF2F75D70B00F28607 /* ListingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +214,7 @@
 		FE0D7FA52F75CA5500F28607 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				FE0D7FAF2F75D70B00F28607 /* ListingsManager.swift */,
 				FE0D7FAB2F75CCCF00F28607 /* ListingAPIClient.swift */,
 				FE0D7FA42F75CA5500F28607 /* APIManager.swift */,
 			);
@@ -326,6 +329,7 @@
 				1F479BA626EF162000F863AC /* TahuduApp.swift in Sources */,
 				1F566C08272964C6000D4E93 /* ContactType.swift in Sources */,
 				1F479BD926EF1A9600F863AC /* TahuduTabView.swift in Sources */,
+				FE0D7FB02F75D70B00F28607 /* ListingsManager.swift in Sources */,
 				FE0D7FA82F75CB9500F28607 /* Listing.swift in Sources */,
 				1F479BEB26EF333800F863AC /* ContactButton.swift in Sources */,
 				1F479BEE26F06FDD00F863AC /* SettingsViewController.swift in Sources */,

@@ -44,6 +44,21 @@ struct PropertyListingCardView: View {
                     .font(.headline)
                     .foregroundColor(.primary)
                 
+                
+                HStack(spacing: 4) {
+                    Image(systemName: "location.fill")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Text(listing.location)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                
+                
+                
                 HStack(spacing: 4) {
                     Image(systemName: "bed.double.fill")
                         .font(.caption)

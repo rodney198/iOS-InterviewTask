@@ -6,57 +6,73 @@
 import SwiftUI
 
 struct SearchView: View {
+    @StateObject private var listingManager = ListingsManager()
     @State private var searchText = ""
 
-    private let mockListings: [SearchListing] = [
-        SearchListing(
-            id: "prop_001",
-            carouselImageNames: ["FirstImage", "SecondImage"],
-            tagLabels: ["Verified", "New Construction"],
-            location: "Dubai",
-            propertyType: "Apartment",
-            deliveryYear: 2022,
-            priceLine: "2,575,000 AED",
-            unitLine: "Studio",
-            publishedLine: "Published 3 days ago",
-            lastContactedLine: "Last contacted: 28 Jul 2021",
-            contactOptions: [.phone, .email, .sms]
-        ),
-        SearchListing(
-            id: "prop_002",
-            carouselImageNames: ["SecondImage", "FirstImage"],
-            tagLabels: ["Verified", "New Construction"],
-            location: "Dubai",
-            propertyType: "Apartment",
-            deliveryYear: 2023,
-            priceLine: "1,850,000 AED",
-            unitLine: "1 Beds",
-            publishedLine: "Published 5 days ago",
-            lastContactedLine: nil,
-            contactOptions: [.phone, .email, .sms]
-        ),
-    ]
+    private var visibleListings: [SearchListing]  {
+        let q = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !q.isEmpty else { return listingManager.listings }
+        return listingManager.listings.filter {
+            $0.location.localizedStandardContains(q)
+        }
+    }
 
     var body: some View {
         VStack(spacing: 0) {
             searchHeader
-            ScrollView {
-                LazyVStack(spacing: 16) {
-                    ForEach(mockListings) { listing in
-                        PropertyListingCardView(
-                            listing: listing,
-                            onHeartTap: { print("Heart tapped — \(listing.id)") },
-                            onPhoneTap: { print("Phone contact — \(listing.id)") },
-                            onEmailTap: { print("Email contact — \(listing.id)") },
-                            onWhatsAppTap: { print("WhatsApp contact — \(listing.id)") }
-                        )
+            
+            if let message = listingManager.errorMessage {
+                errorBanner(message)
+            }
+            ZStack {
+                if !listingManager.isLoading, listingManager.listings.isEmpty, listingManager.errorMessage == nil {
+                    VStack(spacing: 12) {
+                        Image(systemName: "building.2")
+                            .font(.largeTitle)
+                            .foregroundColor(.secondary)
+                        Text("No listings")
+                            .font(.headline)
+                        Text("Pull down to refresh or check your connection.")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .multilineTextAlignment(.center)
+                    }
+                    .padding(24)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    
+                    ScrollView {
+                        LazyVStack(spacing: 16) {
+                            if visibleListings.isEmpty, !listingManager.listings.isEmpty {
+                                Text("No matches for your search found")
+                                    .font(.caption)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.top, 24)
+                            }
+                            
+                            ForEach(visibleListings) { listing in
+                                PropertyListingCardView(
+                                    listing: listing,
+                                    onHeartTap: { print("Heart tapped — \(listing.id)") },
+                                    onPhoneTap: { print("Phone contact — \(listing.id)") },
+                                    onEmailTap: { print("Email contact — \(listing.id)") },
+                                    onWhatsAppTap: { print("WhatsApp contact — \(listing.id)") }
+                                )
+                            }
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 16)
                     }
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 16)
+                
+                if listingManager.isLoading, listingManager.listings.isEmpty {
+                    ProgressView()
+                        .scaleEffect(1.2)
+                }
             }
+            .background(Color(.systemGroupedBackground).ignoresSafeArea())
+            .onAppear { listingManager.refreshListings() }
         }
-        .background(Color(.systemGroupedBackground).ignoresSafeArea())
     }
 
     private var searchHeader: some View {
@@ -102,6 +118,25 @@ struct SearchView: View {
         .padding(.bottom, 12)
         .background(Color(.systemBackground))
     }
+        
+    private func errorBanner(_ message: String) -> some View {
+        VStack(spacing: 8) {
+            Text(message)
+                .font(.caption)
+                .foregroundColor(.primary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 12)
+            Button("Retry") {
+                listingManager.refreshListings()
+            }
+            .font(.caption.weight(.semibold))
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12)
+        .background(Color.red.opacity(0.12))
+    }
+        
+        
 }
 
 struct SearchView_Previews: PreviewProvider {

@@ -32,6 +32,27 @@ enum ListingPresentation {
             .replacingOccurrences(of: "_", with: " ")
             .uppercased()
     }
+    
+    /// Turns snake_case API keys into PascalCase asset names, e.g. `first_image` → `FirstImage`.
+    /// If there is no `_`, the string is returned unchanged (e.g. already `FirstImage`).
+    static func carouselAssetName(for raw: String) -> String {
+        let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return raw }
+
+        let segments = trimmed.split(separator: "_", omittingEmptySubsequences: true)
+        guard !segments.isEmpty else { return raw }
+
+        // Single segment and no underscore: assume it is already an asset/catalog name.
+        if segments.count == 1, !trimmed.contains("_") {
+            return String(segments[0])
+        }
+
+        return segments.map { segment -> String in
+            let s = String(segment)
+            guard let first = s.first else { return "" }
+            return String(first).uppercased() + s.dropFirst().lowercased()
+        }.joined()
+    }
 
     static func priceLine(for listing: Listing) -> String {
         let num = priceFormatter.string(from: NSNumber(value: listing.price)) ?? "\(listing.price)"

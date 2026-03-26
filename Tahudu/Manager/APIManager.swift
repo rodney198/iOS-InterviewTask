@@ -36,9 +36,15 @@ final class APIManager: APIManagerProtocol {
     private let session: URLSession
     private let decoder: JSONDecoder
     
-    init(session: URLSession, decoder: JSONDecoder) {
+    init(session: URLSession = .shared, decoder: JSONDecoder? = nil) {
         self.session = session
-        self.decoder = decoder
+        self.decoder = decoder ?? APIManager.makeListingDecoder()
+    }
+    
+    static func makeListingDecoder() -> JSONDecoder {
+        var decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return decoder
     }
     
     func request<T: Decodable>(_ url: URL, as type: T.Type) async throws-> T {

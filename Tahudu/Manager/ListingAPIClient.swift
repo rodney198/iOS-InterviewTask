@@ -9,7 +9,7 @@ final class ListingAPIClient {
     private let apiManager: APIManagerProtocol
     private let baseURL = URL(string: "https://simplejsoncms.com/api/m6nfoc4jlw")!
     
-    init(apiManager: APIManagerProtocol, baseURL: URL) {
+    init(apiManager: APIManagerProtocol = APIManager()) {
         self.apiManager = apiManager
     }
     
