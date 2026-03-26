@@ -21,6 +21,7 @@
 		1F566C08272964C6000D4E93 /* ContactType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F566C072729641D000D4E93 /* ContactType.swift */; };
 		1F566C0927296594000D4E93 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F566C05272963EE000D4E93 /* Image.swift */; };
 		FE0D7F9D2F75B3AF00F28607 /* PropertyListingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7F9C2F75B3AF00F28607 /* PropertyListingCardView.swift */; };
+		FE0D7FA62F75CA5500F28607 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FA42F75CA5500F28607 /* APIManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		1F566C05272963EE000D4E93 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		1F566C072729641D000D4E93 /* ContactType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactType.swift; sourceTree = "<group>"; };
 		FE0D7F9C2F75B3AF00F28607 /* PropertyListingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyListingCardView.swift; sourceTree = "<group>"; };
+		FE0D7FA42F75CA5500F28607 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 		1F479BA426EF162000F863AC /* Tahudu */ = {
 			isa = PBXGroup;
 			children = (
+				FE0D7FA52F75CA5500F28607 /* Manager */,
 				1F479BD226EF181900F863AC /* Components */,
 				1F479BD026EF17F600F863AC /* Assets */,
 				1F479BCF26EF17EC00F863AC /* Extensions */,
@@ -196,6 +199,14 @@
 				1F566C072729641D000D4E93 /* ContactType.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		FE0D7FA52F75CA5500F28607 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				FE0D7FA42F75CA5500F28607 /* APIManager.swift */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -307,6 +318,7 @@
 				1F479BD926EF1A9600F863AC /* TahuduTabView.swift in Sources */,
 				1F479BEB26EF333800F863AC /* ContactButton.swift in Sources */,
 				1F479BEE26F06FDD00F863AC /* SettingsViewController.swift in Sources */,
+				FE0D7FA62F75CA5500F28607 /* APIManager.swift in Sources */,
 				FE0D7F9D2F75B3AF00F28607 /* PropertyListingCardView.swift in Sources */,
 				1F566C0927296594000D4E93 /* Image.swift in Sources */,
 			);
