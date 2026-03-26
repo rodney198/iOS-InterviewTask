@@ -8,13 +8,15 @@ import SwiftUI
 struct SearchListing: Identifiable {
     let id: String
     let carouselImageNames: [String]
-    let showVerifiedTag: Bool
+    let tagLabels: [String]
+    let location: String
     let propertyType: String
     let deliveryYear: Int
     let priceLine: String
     let unitLine: String
     let publishedLine: String
     let lastContactedLine: String?
+    let contactOptions: [ContactType]
 }
 
 struct PropertyListingCardView: View {
@@ -112,9 +114,7 @@ struct PropertyListingCardView: View {
             .clipped()
 
             HStack(alignment: .top) {
-                if listing.showVerifiedTag {
-                    verifiedPill
-                }
+                verifiedPill
                 Spacer(minLength: 0)
                 heartButton
             }
@@ -176,13 +176,15 @@ struct PropertyListingCardView_Previews: PreviewProvider {
             listing: SearchListing(
                 id: "preview",
                 carouselImageNames: ["FirstImage", "SecondImage"],
-                showVerifiedTag: true,
+                tagLabels: ["Verified", "New Construction"],
+                location: "Dubai",
                 propertyType: "Apartment",
                 deliveryYear: 2022,
                 priceLine: "2,575,000 AED",
                 unitLine: "Studio",
                 publishedLine: "Published 3 days ago",
-                lastContactedLine: "Last contacted: 28 Jul 2021"
+                lastContactedLine: "Last contacted: 28 Jul 2021",
+                contactOptions: [.phone, .email, .sms]
             ),
             onHeartTap: {},
             onPhoneTap: {},

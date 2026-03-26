@@ -12,24 +12,28 @@ struct SearchView: View {
         SearchListing(
             id: "prop_001",
             carouselImageNames: ["FirstImage", "SecondImage"],
-            showVerifiedTag: true,
+            tagLabels: ["Verified", "New Construction"],
+            location: "Dubai",
             propertyType: "Apartment",
             deliveryYear: 2022,
             priceLine: "2,575,000 AED",
             unitLine: "Studio",
             publishedLine: "Published 3 days ago",
-            lastContactedLine: "Last contacted: 28 Jul 2021"
+            lastContactedLine: "Last contacted: 28 Jul 2021",
+            contactOptions: [.phone, .email, .sms]
         ),
         SearchListing(
             id: "prop_002",
             carouselImageNames: ["SecondImage", "FirstImage"],
-            showVerifiedTag: true,
+            tagLabels: ["Verified", "New Construction"],
+            location: "Dubai",
             propertyType: "Apartment",
             deliveryYear: 2023,
             priceLine: "1,850,000 AED",
             unitLine: "1 Beds",
             publishedLine: "Published 5 days ago",
-            lastContactedLine: nil
+            lastContactedLine: nil,
+            contactOptions: [.phone, .email, .sms]
         ),
     ]
 
