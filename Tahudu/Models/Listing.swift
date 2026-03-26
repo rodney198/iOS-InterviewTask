@@ -8,7 +8,7 @@
 import Foundation
 
 struct ListingResponse: Decodable {
-    let listingData: [Listing]
+    let listings: [Listing]
 }
 
 

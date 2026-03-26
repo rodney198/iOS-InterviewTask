@@ -15,7 +15,7 @@ final class ListingAPIClient {
     
     func fetchListings() async throws -> [Listing] {
         let responseData = try await apiManager.request(baseURL, as: ListingResponse.self)
-        return responseData.listingData
+        return responseData.listings
     }
 }
 
