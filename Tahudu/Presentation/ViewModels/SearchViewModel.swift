@@ -45,15 +45,15 @@ final class SearchViewModel: ObservableObject, BaseViewModel {
         guard !listingsManager.listings.isEmpty, visibleListings.isEmpty else { return nil }
         if showFavouritesOnly {
             if !trimmedSearch.isEmpty {
-                return Copy.noFavouritesSearchResults
+                return AppStrings.noFavouritesSearchResults
             }
             if favouritesStore.favouriteIDs.isEmpty {
-                return Copy.noFavourites
+                return AppStrings.noFavourites
             }
-            return Copy.noFavouritesInList
+            return AppStrings.noFavouritesInList
         }
         if !trimmedSearch.isEmpty {
-            return Copy.noSearchResults
+            return AppStrings.noSearchResults
         }
         return nil
     }

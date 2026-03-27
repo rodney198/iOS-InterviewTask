@@ -8,7 +8,7 @@ import SwiftUI
 struct SettingsView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UINavigationController {
         let settingsViewController = SettingsViewController.init(style: .insetGrouped)
-        settingsViewController.title = "My Account"
+        settingsViewController.title = AppStrings.myAccount
 
         let navigatoinController = UINavigationController(rootViewController: settingsViewController)
         navigatoinController.navigationBar.prefersLargeTitles = true

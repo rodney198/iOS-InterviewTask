@@ -26,37 +26,37 @@ class SettingsViewController: UITableViewController {
     }
 
     //MARK: - Seperate reuse identifier ids to manage cell - so reused cell stays value 1 vs default as intended
-    private static let value1ReuseID = "SettingsCellValue1"
-    private static let defaultReuseID = "SettingsCellDefault"
+    private static let value1ReuseID = SettingsTable.value1ReuseID
+    private static let defaultReuseID = SettingsTable.defaultReuseID
 
     /// Single source of truth for sections, rows, copy, SF Symbols, accessibility IDs, and tap actions.
     private var tableSections: [[SettingsRow]] {
         let languageCode = Bundle.main.preferredLocalizations.first
             ?? Locale.current.languageCode
-            ?? "en"
+            ?? AppStrings.preferredLanguageFallbackCode
         let languageLabel = Locale.current.localizedString(forLanguageCode: languageCode)
 
         return [
             [
                 SettingsRow(
-                    accessibilityIdentifier: "SettingsCell_language",
-                    title: "Language",
+                    accessibilityIdentifier: Accessibility.settingsCellLanguage,
+                    title: AppStrings.settingsLanguage,
                     detail: languageLabel,
                     systemImageName: "textformat",
                     usesValue1Style: true,
                     action: .openLanguageSettings
                 ),
                 SettingsRow(
-                    accessibilityIdentifier: "SettingsCell_country",
-                    title: "Country",
-                    detail: "United Arab Emirates",
+                    accessibilityIdentifier: Accessibility.settingsCellCountry,
+                    title: AppStrings.settingsCountry,
+                    detail: AppStrings.settingsCountryUAE,
                     systemImageName: "globe",
                     usesValue1Style: true,
                     action: .showCountrySelection
                 ),
                 SettingsRow(
-                    accessibilityIdentifier: "SettingsCell_notifications",
-                    title: "Notifications",
+                    accessibilityIdentifier: Accessibility.settingsCellNotifications,
+                    title: AppStrings.settingsNotifications,
                     detail: nil,
                     systemImageName: "app.badge",
                     usesValue1Style: false,
@@ -65,16 +65,16 @@ class SettingsViewController: UITableViewController {
             ],
             [
                 SettingsRow(
-                    accessibilityIdentifier: "SettingsCell_about",
-                    title: "About",
+                    accessibilityIdentifier: Accessibility.settingsCellAbout,
+                    title: AppStrings.settingsAbout,
                     detail: nil,
                     systemImageName: "info.circle",
                     usesValue1Style: false,
                     action: .showAbout
                 ),
                 SettingsRow(
-                    accessibilityIdentifier: "SettingsCell_feedback",
-                    title: "Feedback",
+                    accessibilityIdentifier: Accessibility.settingsCellFeedback,
+                    title: AppStrings.settingsFeedback,
                     detail: nil,
                     systemImageName: "text.bubble",
                     usesValue1Style: false,
@@ -92,7 +92,7 @@ class SettingsViewController: UITableViewController {
         tableView.backgroundColor = .systemGroupedBackground
         tableView.tableFooterView = UIView()
 
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "SettingsCell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: SettingsTable.registeredCellID)
     }
 
     override func numberOfSections(in _: UITableView) -> Int {

@@ -24,10 +24,32 @@ struct Accessibility {
     static let addToFavourite = "Add to Favourite"
     static let filter = "Filter"
     static let sort = "Sort"
+    static let settingsCellLanguage = "SettingsCell_language"
+    static let settingsCellCountry = "SettingsCell_country"
+    static let settingsCellNotifications = "SettingsCell_notifications"
+    static let settingsCellAbout = "SettingsCell_about"
+    static let settingsCellFeedback = "SettingsCell_feedback"
 }
 
-// MARK: - Copy Text
-struct Copy {
+// MARK: - Settings table
+struct SettingsTable {
+    static let value1ReuseID = "SettingsCellValue1"
+    static let defaultReuseID = "SettingsCellDefault"
+    static let registeredCellID = "SettingsCell"
+}
+
+// MARK: - App strings
+struct AppStrings {
+    static let tabSearch = "Search"
+    static let myAccount = "My Account"
+    static let tabSettings = "Settings"
+    static let preferredLanguageFallbackCode = "en"
+    static let settingsLanguage = "Language"
+    static let settingsCountry = "Country"
+    static let settingsCountryUAE = "United Arab Emirates"
+    static let settingsNotifications = "Notifications"
+    static let settingsAbout = "About"
+    static let settingsFeedback = "Feedback"
     static let noListings = "No listings"
     static let noListingsMessage = "Pull down to refresh or check your connection."
     static let noFavourites = "No favourites yet. Tap the heart on a listing to save it here."

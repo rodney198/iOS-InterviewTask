@@ -21,7 +21,7 @@ struct ErrorBannerView: View {
                 .foregroundColor(.primary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, Spacing.sm)
-            Button(Copy.retry) {
+            Button(AppStrings.retry) {
                 onRetry()
             }
             .font(Typography.retryButton)

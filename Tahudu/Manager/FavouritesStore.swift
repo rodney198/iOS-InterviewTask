@@ -11,7 +11,7 @@ final class FavouritesStore: ObservableObject {
     @Published private(set) var favouriteIDs: Set<String>
 
     private let userDefaults: UserDefaults
-    private let storageKey = "com.tahudu.favouriteListingIDs"
+    private let storageKey = StorageKeys.favouriteListingIDs
 
     init(userDefaults: UserDefaults = .standard) {
         self.userDefaults = userDefaults

@@ -36,7 +36,7 @@ struct EmptyStateView: View {
 #Preview {
     EmptyStateView(
         systemImage: "building.2",
-        title: Copy.noListings,
-        message: Copy.noListingsMessage
+        title: AppStrings.noListings,
+        message: AppStrings.noListingsMessage
     )
 }

@@ -26,8 +26,8 @@ struct SearchView: View {
                 if viewModel.showEmptyState {
                     EmptyStateView(
                         systemImage: "building.2",
-                        title: Copy.noListings,
-                        message: Copy.noListingsMessage
+                        title: AppStrings.noListings,
+                        message: AppStrings.noListingsMessage
                     )
                 } else {
                     
@@ -93,14 +93,14 @@ struct SearchView: View {
         .foregroundColor(.accentColor)
         
         if viewModel.showFavouritesOnly {
-            Text(Copy.showingFavouritesOnly)
+            Text(AppStrings.showingFavouritesOnly)
                 .font(Typography.favouritesLabel)
                 .foregroundColor(.secondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
 
             ClearableTextField(
-                label: Copy.cityAreaBuildingPlaceholder,
+                label: AppStrings.cityAreaBuildingPlaceholder,
                 symbol: "magnifyingglass",
                 text: $viewModel.searchText,
                 onClear: { viewModel.handleSearchClear() }

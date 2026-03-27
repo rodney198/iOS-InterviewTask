@@ -81,7 +81,7 @@ final class PropertyListingCardViewModel: ObservableObject {
     
     // MARK: - Helper Methods
     func isVerifiedTag(_ tag: String) -> Bool {
-        tag == Copy.verified
+        tag == AppStrings.verified
     }
     
     func tagBackgroundColor(for tag: String) -> Color {

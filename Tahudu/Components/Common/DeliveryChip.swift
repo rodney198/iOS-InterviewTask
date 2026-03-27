@@ -13,7 +13,7 @@ struct DeliveryChip: View {
     }
     
     var body: some View {
-        Text("\(Copy.delivery) \(String(year))")
+        Text("\(AppStrings.delivery) \(String(year))")
             .font(Typography.metadata)
             .foregroundColor(Color.purple)
             .padding(.horizontal, Spacing.sm)

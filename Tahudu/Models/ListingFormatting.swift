@@ -62,21 +62,21 @@ enum ListingPresentation {
     static func unitLine(bedrooms: Int?, bathrooms: Int, areaSqft: Int) -> String {
         let bedPart: String
         if let b = bedrooms {
-            bedPart = "\(b) Beds"
+            bedPart = "\(b) \(AppStrings.beds)"
         } else {
-            bedPart = "Studio"
+            bedPart = AppStrings.studio
         }
-        return "\(bedPart) · \(bathrooms) bath · \(areaSqft) sqft"
+        return "\(bedPart) · \(bathrooms) \(AppStrings.bath) · \(areaSqft) \(AppStrings.sqft)"
     }
 
     static func publishedLine(for date: Date) -> String {
         let relative = relativePublishedFormatter.localizedString(for: date, relativeTo: Date())
-        return "Published \(relative)"
+        return "\(AppStrings.published) \(relative)"
     }
 
     static func lastContactedLine(for date: Date?) -> String? {
         guard let date else { return nil }
-        return "Last contacted: \(lastContactedFormatter.string(from: date))"
+        return "\(AppStrings.lastContacted) \(lastContactedFormatter.string(from: date))"
     }
 }
 

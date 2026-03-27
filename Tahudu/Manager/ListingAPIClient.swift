@@ -7,7 +7,7 @@ import Foundation
 
 final class ListingAPIClient {
     private let apiManager: APIManagerProtocol
-    private let baseURL = URL(string: "https://simplejsoncms.com/api/m6nfoc4jlw")!
+    private let baseURL = URL(string: API.listingsEndpoint)!
     
     init(apiManager: APIManagerProtocol = APIManager()) {
         self.apiManager = apiManager

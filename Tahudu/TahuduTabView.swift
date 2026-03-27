@@ -13,12 +13,12 @@ struct TahuduTabView: View {
             SearchView()
                 .tag(Tabs.search.rawValue)
                 .tabItem {
-                    Label("Search", systemImage: "magnifyingglass")
+                    Label(AppStrings.tabSearch, systemImage: "magnifyingglass")
                 }
             SettingsView()
                 .tag(Tabs.settings.rawValue)
                 .tabItem {
-                    Label("My Account", systemImage: selectedTab == Tabs.settings.rawValue ? "person.fill" : "person")
+                    Label(AppStrings.myAccount, systemImage: selectedTab == Tabs.settings.rawValue ? "person.fill" : "person")
                 }
                 .edgesIgnoringSafeArea(.all)
         }
@@ -32,9 +32,9 @@ enum Tabs: Int, CaseIterable {
     var name: String {
         switch self {
         case .search:
-            return "Search"
+            return AppStrings.tabSearch
         case .settings:
-            return "Settings"
+            return AppStrings.tabSettings
         }
     }
 }
