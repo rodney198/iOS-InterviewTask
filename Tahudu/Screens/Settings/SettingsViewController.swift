@@ -1,4 +1,4 @@
-// 
+//
 //  SettingsViewController.swift
 //  Tahudu
 //
@@ -7,6 +7,83 @@ import Foundation
 import UIKit
 
 class SettingsViewController: UITableViewController {
+
+    private enum SettingsAction {
+        case openLanguageSettings
+        case showCountrySelection
+        case showNotification
+        case showAbout
+        case showFeedback
+    }
+
+    private struct SettingsRow {
+        let accessibilityIdentifier: String
+        let title: String
+        let detail: String?
+        let systemImageName: String
+        let usesValue1Style: Bool
+        let action: SettingsAction
+    }
+
+    //MARK: - Seperate reuse identifier ids to manage cell - so reused cell stays value 1 vs default as intended
+    private static let value1ReuseID = "SettingsCellValue1"
+    private static let defaultReuseID = "SettingsCellDefault"
+
+    /// Single source of truth for sections, rows, copy, SF Symbols, accessibility IDs, and tap actions.
+    private var tableSections: [[SettingsRow]] {
+        let languageCode = Bundle.main.preferredLocalizations.first
+            ?? Locale.current.languageCode
+            ?? "en"
+        let languageLabel = Locale.current.localizedString(forLanguageCode: languageCode)
+
+        return [
+            [
+                SettingsRow(
+                    accessibilityIdentifier: "SettingsCell_language",
+                    title: "Language",
+                    detail: languageLabel,
+                    systemImageName: "textformat",
+                    usesValue1Style: true,
+                    action: .openLanguageSettings
+                ),
+                SettingsRow(
+                    accessibilityIdentifier: "SettingsCell_country",
+                    title: "Country",
+                    detail: "United Arab Emirates",
+                    systemImageName: "globe",
+                    usesValue1Style: true,
+                    action: .showCountrySelection
+                ),
+                SettingsRow(
+                    accessibilityIdentifier: "SettingsCell_notifications",
+                    title: "Notifications",
+                    detail: nil,
+                    systemImageName: "app.badge",
+                    usesValue1Style: false,
+                    action: .showNotification
+                ),
+            ],
+            [
+                SettingsRow(
+                    accessibilityIdentifier: "SettingsCell_about",
+                    title: "About",
+                    detail: nil,
+                    systemImageName: "info.circle",
+                    usesValue1Style: false,
+                    action: .showAbout
+                ),
+                SettingsRow(
+                    accessibilityIdentifier: "SettingsCell_feedback",
+                    title: "Feedback",
+                    detail: nil,
+                    systemImageName: "text.bubble",
+                    usesValue1Style: false,
+                    action: .showFeedback
+                ),
+            ],
+        ]
+    }
+
     override func loadView() {
         super.loadView()
 
@@ -19,99 +96,56 @@ class SettingsViewController: UITableViewController {
     }
 
     override func numberOfSections(in _: UITableView) -> Int {
-        return 2
+        tableSections.count
     }
 
     override func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? 3 : 2
+        tableSections[section].count
     }
 
-    override func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            if indexPath.row == 0 {
-                let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
-                cell.accessibilityIdentifier = "SettingsCell_language"
-                cell.backgroundColor = .systemBackground
-                cell.selectionStyle = .default
-                cell.accessoryType = .disclosureIndicator
-                cell.imageView?.image = UIImage(systemName: "textformat")
-                cell.textLabel?.text = "Language"
-                cell.textLabel?.textColor = .label
-                cell.textLabel?.textAlignment = .natural
-                cell.detailTextLabel?.text = Locale.current.localizedString(forLanguageCode: Bundle.main.preferredLocalizations.first!)
-                cell.detailTextLabel?.textColor = .secondaryLabel
-                return cell
-            } else if indexPath.row == 1 {
-                let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
-                cell.accessibilityIdentifier = "SettingsCell_country"
-                cell.backgroundColor = .systemBackground
-                cell.selectionStyle = .default
-                cell.accessoryType = .disclosureIndicator
-                cell.imageView?.image = UIImage(systemName: "globe")
-                cell.textLabel?.text = "Country"
-                cell.textLabel?.textColor = .label
-                cell.textLabel?.textAlignment = .natural
-                cell.detailTextLabel?.text = "United Arab Emirates"
-                cell.detailTextLabel?.textColor = .secondaryLabel
-                return cell
-            } else if indexPath.row == 2 {
-                let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-                cell.accessibilityIdentifier = "SettingsCell_notifications"
-                cell.backgroundColor = .systemBackground
-                cell.selectionStyle = .default
-                cell.accessoryType = .disclosureIndicator
-                cell.imageView?.image = UIImage(systemName: "app.badge")
-                cell.textLabel?.text = "Notifications"
-                cell.textLabel?.textColor = .label
-                cell.textLabel?.textAlignment = .natural
-                return cell
-            }
-        } else if indexPath.section == 1 {
-            if indexPath.row == 0 {
-                let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-                cell.accessibilityIdentifier = "SettingsCell_about"
-                cell.backgroundColor = .systemBackground
-                cell.selectionStyle = .default
-                cell.accessoryType = .disclosureIndicator
-                cell.imageView?.image = UIImage(systemName: "info.circle")
-                cell.textLabel?.text = "About"
-                cell.textLabel?.textColor = .label
-                cell.textLabel?.textAlignment = .natural
-                return cell
-            } else if indexPath.row == 1 {
-                let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-                cell.accessibilityIdentifier = "SettnigsCell_feedback"
-                cell.backgroundColor = .systemBackground
-                cell.selectionStyle = .default
-                cell.accessoryType = .disclosureIndicator
-                cell.imageView?.image = UIImage(systemName: "text.bubble")
-                cell.textLabel?.text = "Feedback"
-                cell.textLabel?.textColor = .label
-                cell.textLabel?.textAlignment = .natural
-                return cell
-            }
-        }
-
-        return UITableViewCell()
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let row = tableSections[indexPath.section][indexPath.row]
+        let identifier = row.usesValue1Style ? Self.value1ReuseID : Self.defaultReuseID
+        let style: UITableViewCell.CellStyle = row.usesValue1Style ? .value1 : .default
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier)
+            ?? UITableViewCell(style: style, reuseIdentifier: identifier)
+        applyBaseAppearance(to: cell, for: row)
+        return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        //MARK: - Using switch we can check which cell is clicked - duplicate indexpath tree removed
+         let action = tableSections[indexPath.section][indexPath.row].action
+        switch action {
+        case .openLanguageSettings:
+            openSystemSettings()
+        case .showCountrySelection:
+            showCountrySelectionScreen()
+        case .showNotification:
+            showNotificationScreen()
+        case .showAbout:
+            showAboutScreen()
+        case .showFeedback:
+            showFeedbackScreen()
+        }
+    }
 
-        if indexPath.section == 0 {
-            if indexPath.row == 0 {
-                openSystemSettings()
-            } else if indexPath.row == 1 {
-                showCountrySelectionScreen()
-            } else if indexPath.row == 2 {
-                showNotificationScreen()
-            }
-        } else if indexPath.section == 1 {
-            if indexPath.row == 0 {
-                showAboutScreen()
-            } else if indexPath.row == 1 {
-                showFeedbackScreen()
-            }
+    //MARK: - Centralized the Repeated line of Code that was in cell for row at
+    private func applyBaseAppearance(to cell: UITableViewCell, for row: SettingsRow) {
+        cell.accessibilityIdentifier = row.accessibilityIdentifier
+        cell.backgroundColor = .systemBackground
+        cell.selectionStyle = .default
+        cell.accessoryType = .disclosureIndicator
+        cell.imageView?.image = UIImage(systemName: row.systemImageName)
+        cell.textLabel?.text = row.title
+        cell.textLabel?.textColor = .label
+        cell.textLabel?.textAlignment = .natural
+        if let detail = row.detail {
+            cell.detailTextLabel?.text = detail
+            cell.detailTextLabel?.textColor = .secondaryLabel
+        } else {
+            cell.detailTextLabel?.text = nil
         }
     }
 }
