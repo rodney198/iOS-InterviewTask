@@ -83,7 +83,7 @@ final class SearchViewModel: ObservableObject, BaseViewModel {
             .store(in: &cancellables)
         
         // Subscribe to favourites store updates
-        favouritesStore?.objectWillChange
+        self.favouritesStore.objectWillChange
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.objectWillChange.send()
