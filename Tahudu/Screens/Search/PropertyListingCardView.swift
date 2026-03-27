@@ -35,7 +35,7 @@ struct PropertyListingCardView: View {
                     Text(viewModel.propertyType)
                         .font(Typography.metadata)
                         .foregroundColor(.secondary)
-                    deliveryChip
+                    DeliveryChip(year: viewModel.deliveryYear)
                 }
                 
                 Text(viewModel.priceLine)
@@ -130,43 +130,23 @@ struct PropertyListingCardView: View {
     }
 
     private var carouselSection: some View {
-        ZStack(alignment: .top) {
-            TabView {
-                ForEach(viewModel.carouselImageNames, id: \.self) { name in
-                    Image(name)
-                        .resizable()
-                        .scaledToFill()
+        CarouselImageView(
+            imageNames: viewModel.carouselImageNames,
+            overlayContent: AnyView(
+                HStack(alignment: .top) {
+                    ForEach(Array(viewModel.tagLabels.enumerated()), id: \.offset) { _, label in
+                        TagPillView(
+                            text: label,
+                            backgroundColor: viewModel.tagBackgroundColor(for: label)
+                        )
+                    }
+                    Spacer(minLength: 0)
+                    heartButton
                 }
-            }
-            .frame(height: Sizing.carouselHeight)
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
-            .clipped()
-
-            HStack(alignment: .top) {
-                ForEach(Array(viewModel.tagLabels.enumerated()), id: \.offset) { _, label in
-                    tagPill(label)
-                }
-                Spacer(minLength: 0)
-                heartButton
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(Spacing.sm)
-        }
+            )
+        )
     }
     
-    private func tagPill(_ text: String) -> some View {
-        HStack(spacing: Spacing.xs) {
-            Text(text)
-                .font(Typography.tags)
-                .fontWeight(FontWeights.semibold)
-        }
-        .foregroundColor(.white)
-        .padding(.horizontal, Spacing.sm)
-        .padding(.vertical, Spacing.xs)
-        .background(viewModel.tagBackgroundColor(for: text))
-        .clipShape(RoundedRectangle(cornerRadius: CornerRadius.small))
-                        
-    }
 
     private var heartButton: some View {
         Button(action: { viewModel.toggleFavourite() }) {
@@ -181,15 +161,6 @@ struct PropertyListingCardView: View {
         .accessibilityLabel(viewModel.isFavourite ? Accessibility.removeFromFavourite : Accessibility.addToFavourite)
     }
 
-    private var deliveryChip: some View {
-        Text("\(Copy.delivery) \(String(viewModel.deliveryYear))")
-            .font(Typography.metadata)
-            .foregroundColor(Color.purple)
-            .padding(.horizontal, Spacing.sm)
-            .padding(.vertical, Spacing.xs)
-            .background(Color.purple.opacity(Opacity.verifiedBackground))
-            .clipShape(Capsule())
-    }
 
     private func lastContactedBanner(text: String) -> some View {
         HStack(spacing: Spacing.sm) {

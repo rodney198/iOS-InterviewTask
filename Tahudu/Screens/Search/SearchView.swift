@@ -18,23 +18,17 @@ struct SearchView: View {
             searchHeader
             
             if let message = viewModel.errorMessage {
-                errorBanner(message)
+                ErrorBannerView(message: message, onRetry: {
+                    viewModel.retryLoadListings()
+                })
             }
             ZStack {
                 if viewModel.showEmptyState {
-                    VStack(spacing: 12) {
-                        Image(systemName: "building.2")
-                            .font(.largeTitle)
-                            .foregroundColor(.secondary)
-                        Text(Copy.noListings)
-                            .font(Typography.emptyStateTitle)
-                        Text(Copy.noListingsMessage)
-                            .font(Typography.emptyStateMessage)
-                            .foregroundColor(.secondary)
-                            .multilineTextAlignment(.center)
-                    }
-                    .padding(24)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    EmptyStateView(
+                        systemImage: "building.2",
+                        title: Copy.noListings,
+                        message: Copy.noListingsMessage
+                    )
                 } else {
                     
                     ScrollView {
@@ -66,8 +60,7 @@ struct SearchView: View {
                 }
                 
                 if viewModel.showLoading {
-                    ProgressView()
-                        .scaleEffect(1.2)
+                    LoadingView()
                 }
             }
             .background(Color(.systemGroupedBackground).ignoresSafeArea())
@@ -77,34 +70,24 @@ struct SearchView: View {
 
     private var searchHeader: some View {
         VStack(spacing: 12) {
-            HStack(spacing: 16) {
-                Button {
+            HStack(spacing: Spacing.md) {
+                FilterButton(systemName: "line.3.horizontal.decrease.circle") {
                     viewModel.handleFilterTap()
-                } label: {
-                    Image(systemName: "line.3.horizontal.decrease.circle")
-                        .font(Typography.buttons)
                 }
-                .buttonStyle(.plain)
 
-                Button {
+                FilterButton(systemName: "arrow.up.arrow.down") {
                     viewModel.handleSortTap()
-                } label: {
-                    Image(systemName: "arrow.up.arrow.down")
-                        .font(Typography.buttons)
                 }
-                .buttonStyle(.plain)
 
                 Spacer(minLength: 0)
 
-            Button {
+            FilterButton(
+                systemName: viewModel.showFavouritesOnly ? "star.fill" : "star"
+            ) {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     viewModel.showFavouritesOnly.toggle()
                 }
-            } label: {
-                Image(systemName: viewModel.showFavouritesOnly ? "star.fill" : "star")
-                    .font(Typography.buttons)
             }
-            .buttonStyle(.plain)
             .accessibilityLabel(viewModel.showFavouritesOnly ? Accessibility.showAllListings : Accessibility.showOnlyFavourites)
         }
         .foregroundColor(.accentColor)
@@ -128,25 +111,6 @@ struct SearchView: View {
         .padding(.bottom, Spacing.md)
         .background(Color(.systemBackground))
     }
-        
-    private func errorBanner(_ message: String) -> some View {
-        VStack(spacing: Spacing.sm) {
-            Text(message)
-                .font(Typography.errorMessage)
-                .foregroundColor(.primary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, Spacing.sm)
-            Button(Copy.retry) {
-                viewModel.retryLoadListings()
-            }
-            .font(Typography.retryButton)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, Spacing.sm)
-        .background(Color.red.opacity(Opacity.errorBackground))
-    }
-        
-        
 }
 
 struct SearchView_Previews: PreviewProvider {
