@@ -132,7 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				FE0D7FBE2F7634B700F28607 /* Presentation */,
-				FE0D7FB82F76347E00F28607 /* Core */,
+				FE0D7FB82F76347E00F28607 /* Utils */,
 				FE0D7FA52F75CA5500F28607 /* Manager */,
 				1F479BD226EF181900F863AC /* Components */,
 				1F479BD026EF17F600F863AC /* Assets */,
@@ -263,12 +263,12 @@
 			path = Constants;
 			sourceTree = "<group>";
 		};
-		FE0D7FB82F76347E00F28607 /* Core */ = {
+		FE0D7FB82F76347E00F28607 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				FE0D7FB72F76347E00F28607 /* Constants */,
 			);
-			path = Core;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		FE0D7FBD2F7634B700F28607 /* ViewModels */ = {

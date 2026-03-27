@@ -21,7 +21,7 @@ struct SearchListing: Identifiable {
 
 struct PropertyListingCardView: View {
     let listing: SearchListing
-    let viewModel: PropertyListingCardViewModel
+    @ObservedObject var viewModel: PropertyListingCardViewModel
     
 
     var body: some View {
