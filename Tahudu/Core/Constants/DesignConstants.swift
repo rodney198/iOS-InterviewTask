@@ -49,3 +49,20 @@ struct Opacity {
     static let errorBackground: CGFloat = 0.12
     static let heartBackground: CGFloat = 0.35
 }
+
+// MARK: - System Colors
+struct SystemColors {
+    static let background = Color(.systemBackground)
+    static let groupedBackground = Color(.systemGroupedBackground)
+    static let separator = Color(UIColor.separator)
+}
+
+// MARK: - Divider
+struct Divider {
+    static let height: CGFloat = 1
+}
+
+// MARK: - Stroke
+struct Stroke {
+    static let width: CGFloat = 1
+}

@@ -63,7 +63,7 @@ struct SearchView: View {
                     LoadingView()
                 }
             }
-            .background(Color(.systemGroupedBackground).ignoresSafeArea())
+            .background(SystemColors.groupedBackground.ignoresSafeArea())
             .onAppear { viewModel.refreshListings() }
         }
     }
@@ -109,7 +109,7 @@ struct SearchView: View {
         .padding(.horizontal, Spacing.lg)
         .padding(.top, Spacing.sm)
         .padding(.bottom, Spacing.md)
-        .background(Color(.systemBackground))
+        .background(SystemColors.background)
     }
 }
 

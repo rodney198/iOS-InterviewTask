@@ -95,11 +95,11 @@ struct PropertyListingCardView: View {
                 lastContactedBanner(text: line)
             }
         }
-        .background(Color(.systemBackground))
+        .background(SystemColors.background)
         .clipShape(RoundedRectangle(cornerRadius: CornerRadius.large))
         .overlay(
             RoundedRectangle(cornerRadius: CornerRadius.large)
-                .stroke(Color(UIColor.separator).opacity(Opacity.separator), lineWidth: 1)
+                .stroke(Color(UIColor.separator).opacity(Opacity.separator), lineWidth: Stroke.width)
         )
         .shadow(color: Shadow.card, radius: Shadow.cardRadius, x: Shadow.cardOffset.width, y: Shadow.cardOffset.height)
     }
@@ -125,7 +125,7 @@ struct PropertyListingCardView: View {
     private var footerDivider: some View {
         Rectangle()
             .fill(Color(UIColor.separator))
-            .frame(height: 1)
+            .frame(height: Divider.height)
             .frame(maxWidth: .infinity)
     }
 

@@ -28,7 +28,7 @@ struct ErrorBannerView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, Spacing.sm)
-        .background(Color.red.opacity(Opacity.errorBackground))
+        .background(Color.error.opacity(Opacity.errorBackground))
     }
 }
 

@@ -16,8 +16,8 @@ struct ClearableTextFieldStyle: TextFieldStyle {
             .modifier(TextFieldClearButton(text: $text, symbol: symbol, onClear: onClear))
             .multilineTextAlignment(.leading)
             .padding()
-            .background(RoundedRectangle(cornerRadius: 8)
-                            .stroke(focused ? Color.accentColor : Color(UIColor.lightGray), lineWidth: 1))
+            .background(RoundedRectangle(cornerRadius: CornerRadius.medium)
+                            .stroke(focused ? Color.accentColor : Color(UIColor.separator), lineWidth: Stroke.width))
     }
 }
 
@@ -60,7 +60,7 @@ struct TextFieldClearButton: ViewModifier {
     func body(content: Content) -> some View {
         HStack {
             if let icon = symbol {
-                Image(systemName: icon).foregroundColor(Color(UIColor.lightGray))
+                Image(systemName: icon).foregroundColor(Color(UIColor.separator))
             }
             content
             if !text.isEmpty {
