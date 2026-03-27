@@ -27,6 +27,10 @@
 		FE0D7FAE2F75D1C400F28607 /* ListingFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FAD2F75D1C400F28607 /* ListingFormatting.swift */; };
 		FE0D7FB02F75D70B00F28607 /* ListingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FAF2F75D70B00F28607 /* ListingsManager.swift */; };
 		FE0D7FB22F76231900F28607 /* FavouritesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FB12F76231900F28607 /* FavouritesStore.swift */; };
+		FE0D7FB92F76347E00F28607 /* DesignConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FB52F76347E00F28607 /* DesignConstants.swift */; };
+		FE0D7FBA2F76347E00F28607 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FB42F76347E00F28607 /* AppConstants.swift */; };
+		FE0D7FBB2F76347E00F28607 /* FontConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FB62F76347E00F28607 /* FontConstants.swift */; };
+		FE0D7FBF2F7634B700F28607 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FBC2F7634B700F28607 /* BaseViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +67,10 @@
 		FE0D7FAD2F75D1C400F28607 /* ListingFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingFormatting.swift; sourceTree = "<group>"; };
 		FE0D7FAF2F75D70B00F28607 /* ListingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsManager.swift; sourceTree = "<group>"; };
 		FE0D7FB12F76231900F28607 /* FavouritesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesStore.swift; sourceTree = "<group>"; };
+		FE0D7FB42F76347E00F28607 /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
+		FE0D7FB52F76347E00F28607 /* DesignConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignConstants.swift; sourceTree = "<group>"; };
+		FE0D7FB62F76347E00F28607 /* FontConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontConstants.swift; sourceTree = "<group>"; };
+		FE0D7FBC2F7634B700F28607 /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +113,8 @@
 		1F479BA426EF162000F863AC /* Tahudu */ = {
 			isa = PBXGroup;
 			children = (
+				FE0D7FBE2F7634B700F28607 /* Presentation */,
+				FE0D7FB82F76347E00F28607 /* Core */,
 				FE0D7FA52F75CA5500F28607 /* Manager */,
 				1F479BD226EF181900F863AC /* Components */,
 				1F479BD026EF17F600F863AC /* Assets */,
@@ -224,6 +234,40 @@
 			path = Manager;
 			sourceTree = "<group>";
 		};
+		FE0D7FB72F76347E00F28607 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				FE0D7FB42F76347E00F28607 /* AppConstants.swift */,
+				FE0D7FB52F76347E00F28607 /* DesignConstants.swift */,
+				FE0D7FB62F76347E00F28607 /* FontConstants.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		FE0D7FB82F76347E00F28607 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				FE0D7FB72F76347E00F28607 /* Constants */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		FE0D7FBD2F7634B700F28607 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				FE0D7FBC2F7634B700F28607 /* BaseViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		FE0D7FBE2F7634B700F28607 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				FE0D7FBD2F7634B700F28607 /* ViewModels */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -326,6 +370,9 @@
 			files = (
 				FE0D7FB22F76231900F28607 /* FavouritesStore.swift in Sources */,
 				FE0D7FAC2F75CCCF00F28607 /* ListingAPIClient.swift in Sources */,
+				FE0D7FB92F76347E00F28607 /* DesignConstants.swift in Sources */,
+				FE0D7FBA2F76347E00F28607 /* AppConstants.swift in Sources */,
+				FE0D7FBB2F76347E00F28607 /* FontConstants.swift in Sources */,
 				1F479BDD26EF1AD400F863AC /* SearchView.swift in Sources */,
 				1F479BD726EF1A0200F863AC /* Colors.swift in Sources */,
 				1F479BD526EF18B800F863AC /* ClearableTextField.swift in Sources */,
@@ -338,6 +385,7 @@
 				1F479BEB26EF333800F863AC /* ContactButton.swift in Sources */,
 				1F479BEE26F06FDD00F863AC /* SettingsViewController.swift in Sources */,
 				FE0D7FA62F75CA5500F28607 /* APIManager.swift in Sources */,
+				FE0D7FBF2F7634B700F28607 /* BaseViewModel.swift in Sources */,
 				FE0D7FAE2F75D1C400F28607 /* ListingFormatting.swift in Sources */,
 				FE0D7F9D2F75B3AF00F28607 /* PropertyListingCardView.swift in Sources */,
 				1F566C0927296594000D4E93 /* Image.swift in Sources */,
