@@ -26,6 +26,7 @@
 		FE0D7FAC2F75CCCF00F28607 /* ListingAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FAB2F75CCCF00F28607 /* ListingAPIClient.swift */; };
 		FE0D7FAE2F75D1C400F28607 /* ListingFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FAD2F75D1C400F28607 /* ListingFormatting.swift */; };
 		FE0D7FB02F75D70B00F28607 /* ListingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FAF2F75D70B00F28607 /* ListingsManager.swift */; };
+		FE0D7FB22F76231900F28607 /* FavouritesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FB12F76231900F28607 /* FavouritesStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		FE0D7FAB2F75CCCF00F28607 /* ListingAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingAPIClient.swift; sourceTree = "<group>"; };
 		FE0D7FAD2F75D1C400F28607 /* ListingFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingFormatting.swift; sourceTree = "<group>"; };
 		FE0D7FAF2F75D70B00F28607 /* ListingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsManager.swift; sourceTree = "<group>"; };
+		FE0D7FB12F76231900F28607 /* FavouritesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -217,6 +219,7 @@
 				FE0D7FAF2F75D70B00F28607 /* ListingsManager.swift */,
 				FE0D7FAB2F75CCCF00F28607 /* ListingAPIClient.swift */,
 				FE0D7FA42F75CA5500F28607 /* APIManager.swift */,
+				FE0D7FB12F76231900F28607 /* FavouritesStore.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE0D7FB22F76231900F28607 /* FavouritesStore.swift in Sources */,
 				FE0D7FAC2F75CCCF00F28607 /* ListingAPIClient.swift in Sources */,
 				1F479BDD26EF1AD400F863AC /* SearchView.swift in Sources */,
 				1F479BD726EF1A0200F863AC /* Colors.swift in Sources */,

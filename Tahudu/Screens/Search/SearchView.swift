@@ -7,14 +7,43 @@ import SwiftUI
 
 struct SearchView: View {
     @StateObject private var listingManager = ListingsManager()
+    @StateObject private var favouritesStore = FavouritesStore()
     @State private var searchText = ""
+    @State private var showFavouritesOnly = false
+    
+    private var trimmedSearch: String {
+        searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private var listingsAfterFavouritesFilter: [SearchListing] {
+        if showFavouritesOnly {
+            return listingManager.listings.filter { favouritesStore.isFavourite(id: $0.id) }
+        }
+        return listingManager.listings
+    }
 
     private var visibleListings: [SearchListing]  {
-        let q = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !q.isEmpty else { return listingManager.listings }
-        return listingManager.listings.filter {
-            $0.location.localizedStandardContains(q)
+        let base = listingsAfterFavouritesFilter
+         let q = trimmedSearch
+         guard !q.isEmpty else { return base }
+         return base.filter { $0.location.localizedStandardContains(q) }
+     }
+
+    private var noResultsMessage: String? {
+        guard !listingManager.listings.isEmpty, visibleListings.isEmpty else { return nil }
+        if showFavouritesOnly {
+            if !trimmedSearch.isEmpty {
+                return "No favourites match your search."
+            }
+            if favouritesStore.favouriteIDs.isEmpty {
+                return "No favourites yet. Tap the heart on a listing to save it here."
+            }
+            return "None of your favourites are in this list."
         }
+        if !trimmedSearch.isEmpty {
+            return "No matches for your search."
+        }
+        return nil
     }
 
     var body: some View {
@@ -43,9 +72,10 @@ struct SearchView: View {
                     
                     ScrollView {
                         LazyVStack(spacing: 16) {
-                            if visibleListings.isEmpty, !listingManager.listings.isEmpty {
-                                Text("No matches for your search found")
+                            if let message = noResultsMessage {
+                                Text(message)
                                     .font(.caption)
+                                    .multilineTextAlignment(.center)
                                     .frame(maxWidth: .infinity)
                                     .padding(.top, 24)
                             }
@@ -53,7 +83,12 @@ struct SearchView: View {
                             ForEach(visibleListings) { listing in
                                 PropertyListingCardView(
                                     listing: listing,
-                                    onHeartTap: { print("Heart tapped — \(listing.id)") },
+                                    isFavourite: favouritesStore.isFavourite(id: listing.id),
+                                    onHeartTap: {
+                                        withAnimation(.spring(response: 0.32, dampingFraction: 0.65)) {
+                                            favouritesStore.toggle(id: listing.id)
+                                        }
+                                    },
                                     onPhoneTap: { print("Phone contact — \(listing.id)") },
                                     onEmailTap: { print("Email contact — \(listing.id)") },
                                     onWhatsAppTap: { print("WhatsApp contact — \(listing.id)") }, onSmsTap: { print("SMS contact — \(listing.id)")}
@@ -96,15 +131,26 @@ struct SearchView: View {
 
                 Spacer(minLength: 0)
 
-                Button {
-                    print("Favourites tapped")
-                } label: {
-                    Image(systemName: "star")
-                        .font(.title3)
+            Button {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    showFavouritesOnly.toggle()
                 }
-                .buttonStyle(.plain)
+            } label: {
+                Image(systemName: showFavouritesOnly ? "star.fill" : "star")
+                    .font(.title3)
+                //  .fontWeight(showFavouritesOnly ? .semibold : .regular)
             }
-            .foregroundColor(.accentColor)
+            .buttonStyle(.plain)
+            .accessibilityLabel(showFavouritesOnly ? "Show all listings" : "Show only favourites")
+        }
+        .foregroundColor(.accentColor)
+        
+        if showFavouritesOnly {
+            Text("Showing favourites only")
+                .font(.caption2.weight(.medium))
+                .foregroundColor(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
 
             ClearableTextField(
                 label: "City, area or building",

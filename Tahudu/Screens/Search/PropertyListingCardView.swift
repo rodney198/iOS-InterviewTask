@@ -21,6 +21,7 @@ struct SearchListing: Identifiable {
 
 struct PropertyListingCardView: View {
     let listing: SearchListing
+    let isFavourite: Bool
     let onHeartTap: () -> Void
     let onPhoneTap: () -> Void
     let onEmailTap: () -> Void
@@ -186,13 +187,15 @@ struct PropertyListingCardView: View {
 
     private var heartButton: some View {
         Button(action: onHeartTap) {
-            Image(systemName: "heart")
+            Image(systemName: isFavourite ? "heart.fill" : "heart")
                 .font(.body.weight(.medium))
                 .foregroundColor(.white)
                 .frame(width: 36, height: 36)
                 .background(Circle().fill(Color.black.opacity(0.35)))
+                .animation(.spring(response: 0.32, dampingFraction: 0.65), value: isFavourite)
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(isFavourite ? "Remove from Favourite" : "Add to Favourite")
     }
 
     private var deliveryChip: some View {
@@ -223,27 +226,56 @@ struct PropertyListingCardView: View {
 
 struct PropertyListingCardView_Previews: PreviewProvider {
     static var previews: some View {
-        PropertyListingCardView(
-            listing: SearchListing(
-                id: "preview",
-                carouselImageNames: ["FirstImage", "SecondImage"],
-                tagLabels: ["Verified", "New Construction"],
-                location: "Dubai",
-                propertyType: "Apartment",
-                deliveryYear: 2022,
-                priceLine: "2,575,000 AED",
-                unitLine: "Studio",
-                publishedLine: "Published 3 days ago",
-                lastContactedLine: "Last contacted: 28 Jul 2021",
-                contactOptions: [.phone, .email, .sms]
-            ),
-            onHeartTap: {},
-            onPhoneTap: {},
-            onEmailTap: {},
-            onWhatsAppTap: {},
-            onSmsTap: {}
-        )
-        .padding()
-        .previewLayout(.sizeThatFits)
+        Group {
+            PropertyListingCardView(
+                listing: SearchListing(
+                    id: "preview",
+                    carouselImageNames: ["FirstImage", "SecondImage"],
+                    tagLabels: ["VERIFIED", "NEW CONSTRUCTION"],
+                    location: "Dubai",
+                    propertyType: "Apartment",
+                    deliveryYear: 2022,
+                    priceLine: "2,575,000 AED",
+                    unitLine: "Studio · 1 bath · 1356 sqft",
+                    publishedLine: "Published 3 days ago",
+                    lastContactedLine: "Last contacted: 28 Jul 2021",
+                    contactOptions: [.phone, .email, .whatsApp]
+                ),
+                isFavourite: false,
+                onHeartTap: {},
+                onPhoneTap: {},
+                onEmailTap: {},
+                onWhatsAppTap: {},
+                onSmsTap: {}
+            )
+            .padding()
+            .previewLayout(.sizeThatFits)
+            .previewDisplayName("Not favourite")
+
+            PropertyListingCardView(
+                listing: SearchListing(
+                    id: "preview-fav",
+                    carouselImageNames: ["FirstImage", "SecondImage"],
+                    tagLabels: ["VERIFIED", "NEW CONSTRUCTION"],
+                    location: "Dubai",
+                    propertyType: "Apartment",
+                    deliveryYear: 2022,
+                    priceLine: "2,575,000 AED",
+                    unitLine: "Studio · 1 bath · 1356 sqft",
+                    publishedLine: "Published 3 days ago",
+                    lastContactedLine: "Last contacted: 28 Jul 2021",
+                    contactOptions: [.phone, .email, .whatsApp]
+                ),
+                isFavourite: true,
+                onHeartTap: {},
+                onPhoneTap: {},
+                onEmailTap: {},
+                onWhatsAppTap: {},
+                onSmsTap: {}
+            )
+            .padding()
+            .previewLayout(.sizeThatFits)
+            .previewDisplayName("Favourite")
+        }
     }
 }
