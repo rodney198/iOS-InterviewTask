@@ -6,63 +6,30 @@
 import SwiftUI
 
 struct SearchView: View {
-    @StateObject private var listingManager = ListingsManager()
-    @StateObject private var favouritesStore = FavouritesStore()
-    @State private var searchText = ""
-    @State private var showFavouritesOnly = false
+    @StateObject private var viewModel: SearchViewModel
     
-    private var trimmedSearch: String {
-        searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+    init() {
+        _viewModel = StateObject(wrappedValue: SearchViewModel())
     }
-
-    private var listingsAfterFavouritesFilter: [SearchListing] {
-        if showFavouritesOnly {
-            return listingManager.listings.filter { favouritesStore.isFavourite(id: $0.id) }
-        }
-        return listingManager.listings
-    }
-
-    private var visibleListings: [SearchListing]  {
-        let base = listingsAfterFavouritesFilter
-         let q = trimmedSearch
-         guard !q.isEmpty else { return base }
-         return base.filter { $0.location.localizedStandardContains(q) }
-     }
-
-    private var noResultsMessage: String? {
-        guard !listingManager.listings.isEmpty, visibleListings.isEmpty else { return nil }
-        if showFavouritesOnly {
-            if !trimmedSearch.isEmpty {
-                return "No favourites match your search."
-            }
-            if favouritesStore.favouriteIDs.isEmpty {
-                return "No favourites yet. Tap the heart on a listing to save it here."
-            }
-            return "None of your favourites are in this list."
-        }
-        if !trimmedSearch.isEmpty {
-            return "No matches for your search."
-        }
-        return nil
-    }
+    
 
     var body: some View {
         VStack(spacing: 0) {
             searchHeader
             
-            if let message = listingManager.errorMessage {
+            if let message = viewModel.errorMessage {
                 errorBanner(message)
             }
             ZStack {
-                if !listingManager.isLoading, listingManager.listings.isEmpty, listingManager.errorMessage == nil {
+                if viewModel.showEmptyState {
                     VStack(spacing: 12) {
                         Image(systemName: "building.2")
                             .font(.largeTitle)
                             .foregroundColor(.secondary)
-                        Text("No listings")
-                            .font(.headline)
-                        Text("Pull down to refresh or check your connection.")
-                            .font(.caption)
+                        Text(Copy.noListings)
+                            .font(Typography.emptyStateTitle)
+                        Text(Copy.noListingsMessage)
+                            .font(Typography.emptyStateMessage)
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.center)
                     }
@@ -72,26 +39,24 @@ struct SearchView: View {
                     
                     ScrollView {
                         LazyVStack(spacing: 16) {
-                            if let message = noResultsMessage {
+                            if let message = viewModel.noResultsMessage {
                                 Text(message)
-                                    .font(.caption)
+                                    .font(Typography.emptyStateMessage)
                                     .multilineTextAlignment(.center)
                                     .frame(maxWidth: .infinity)
                                     .padding(.top, 24)
                             }
                             
-                            ForEach(visibleListings) { listing in
+                            ForEach(viewModel.visibleListings) { listing in
                                 PropertyListingCardView(
                                     listing: listing,
-                                    isFavourite: favouritesStore.isFavourite(id: listing.id),
-                                    onHeartTap: {
-                                        withAnimation(.spring(response: 0.32, dampingFraction: 0.65)) {
-                                            favouritesStore.toggle(id: listing.id)
+                                    viewModel: PropertyListingCardViewModel(
+                                        listing: listing,
+                                        favouritesStore: viewModel.favouritesStore,
+                                        onContact: { listingId, type in
+                                            viewModel.handleContact(listingId: listingId, type: type)
                                         }
-                                    },
-                                    onPhoneTap: { print("Phone contact — \(listing.id)") },
-                                    onEmailTap: { print("Email contact — \(listing.id)") },
-                                    onWhatsAppTap: { print("WhatsApp contact — \(listing.id)") }, onSmsTap: { print("SMS contact — \(listing.id)")}
+                                    )
                                 )
                             }
                         }
@@ -100,13 +65,13 @@ struct SearchView: View {
                     }
                 }
                 
-                if listingManager.isLoading, listingManager.listings.isEmpty {
+                if viewModel.showLoading {
                     ProgressView()
                         .scaleEffect(1.2)
                 }
             }
             .background(Color(.systemGroupedBackground).ignoresSafeArea())
-            .onAppear { listingManager.refreshListings() }
+            .onAppear { viewModel.refreshListings() }
         }
     }
 
@@ -114,18 +79,18 @@ struct SearchView: View {
         VStack(spacing: 12) {
             HStack(spacing: 16) {
                 Button {
-                    print("Filter tapped")
+                    viewModel.handleFilterTap()
                 } label: {
                     Image(systemName: "line.3.horizontal.decrease.circle")
-                        .font(.title3)
+                        .font(Typography.buttons)
                 }
                 .buttonStyle(.plain)
 
                 Button {
-                    print("Sort tapped")
+                    viewModel.handleSortTap()
                 } label: {
                     Image(systemName: "arrow.up.arrow.down")
-                        .font(.title3)
+                        .font(Typography.buttons)
                 }
                 .buttonStyle(.plain)
 
@@ -133,53 +98,52 @@ struct SearchView: View {
 
             Button {
                 withAnimation(.easeInOut(duration: 0.2)) {
-                    showFavouritesOnly.toggle()
+                    viewModel.showFavouritesOnly.toggle()
                 }
             } label: {
-                Image(systemName: showFavouritesOnly ? "star.fill" : "star")
-                    .font(.title3)
-                //  .fontWeight(showFavouritesOnly ? .semibold : .regular)
+                Image(systemName: viewModel.showFavouritesOnly ? "star.fill" : "star")
+                    .font(Typography.buttons)
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(showFavouritesOnly ? "Show all listings" : "Show only favourites")
+            .accessibilityLabel(viewModel.showFavouritesOnly ? Accessibility.showAllListings : Accessibility.showOnlyFavourites)
         }
         .foregroundColor(.accentColor)
         
-        if showFavouritesOnly {
-            Text("Showing favourites only")
-                .font(.caption2.weight(.medium))
+        if viewModel.showFavouritesOnly {
+            Text(Copy.showingFavouritesOnly)
+                .font(Typography.favouritesLabel)
                 .foregroundColor(.secondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
 
             ClearableTextField(
-                label: "City, area or building",
+                label: Copy.cityAreaBuildingPlaceholder,
                 symbol: "magnifyingglass",
-                text: $searchText,
-                onClear: { print("Search field cleared") }
+                text: $viewModel.searchText,
+                onClear: { viewModel.handleSearchClear() }
             )
         }
-        .padding(.horizontal, 16)
-        .padding(.top, 8)
-        .padding(.bottom, 12)
+        .padding(.horizontal, Spacing.lg)
+        .padding(.top, Spacing.sm)
+        .padding(.bottom, Spacing.md)
         .background(Color(.systemBackground))
     }
         
     private func errorBanner(_ message: String) -> some View {
-        VStack(spacing: 8) {
+        VStack(spacing: Spacing.sm) {
             Text(message)
-                .font(.caption)
+                .font(Typography.errorMessage)
                 .foregroundColor(.primary)
                 .multilineTextAlignment(.center)
-                .padding(.horizontal, 12)
-            Button("Retry") {
-                listingManager.refreshListings()
+                .padding(.horizontal, Spacing.sm)
+            Button(Copy.retry) {
+                viewModel.retryLoadListings()
             }
-            .font(.caption.weight(.semibold))
+            .font(Typography.retryButton)
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, 12)
-        .background(Color.red.opacity(0.12))
+        .padding(.vertical, Spacing.sm)
+        .background(Color.red.opacity(Opacity.errorBackground))
     }
         
         

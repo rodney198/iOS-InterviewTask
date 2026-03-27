@@ -21,12 +21,7 @@ struct SearchListing: Identifiable {
 
 struct PropertyListingCardView: View {
     let listing: SearchListing
-    let isFavourite: Bool
-    let onHeartTap: () -> Void
-    let onPhoneTap: () -> Void
-    let onEmailTap: () -> Void
-    let onWhatsAppTap: () -> Void
-    let onSmsTap: () -> Void
+    let viewModel: PropertyListingCardViewModel
     
 
     var body: some View {
@@ -36,24 +31,24 @@ struct PropertyListingCardView: View {
             
             VStack(alignment: .leading, spacing: 12) {
                 
-                HStack(alignment: .center, spacing: 8) {
-                    Text(listing.propertyType)
-                        .font(.caption)
+                HStack(alignment: .center, spacing: Spacing.sm) {
+                    Text(viewModel.propertyType)
+                        .font(Typography.metadata)
                         .foregroundColor(.secondary)
                     deliveryChip
                 }
                 
-                Text(listing.priceLine)
-                    .font(.headline)
+                Text(viewModel.priceLine)
+                    .font(Typography.price)
                     .foregroundColor(.primary)
                 
                 
-                HStack(spacing: 4) {
+                HStack(spacing: Spacing.xs) {
                     Image(systemName: "location.fill")
-                        .font(.caption)
+                        .font(Typography.metadata)
                         .foregroundColor(.secondary)
-                    Text(listing.location)
-                        .font(.caption)
+                    Text(viewModel.location)
+                        .font(Typography.location)
                         .foregroundColor(.secondary)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .lineLimit(2)
@@ -62,67 +57,67 @@ struct PropertyListingCardView: View {
                 
                 
                 
-                HStack(spacing: 4) {
+                HStack(spacing: Spacing.xs) {
                     Image(systemName: "bed.double.fill")
-                        .font(.caption)
+                        .font(Typography.metadata)
                         .foregroundColor(.secondary)
-                    Text(listing.unitLine)
-                        .font(.caption)
+                    Text(viewModel.unitLine)
+                        .font(Typography.metadata)
                         .foregroundColor(.secondary)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 16)
-            .padding(.top, 12)
-            .padding(.bottom, 12)
+            .padding(.horizontal, Spacing.lg)
+            .padding(.top, Spacing.md)
+            .padding(.bottom, Spacing.md)
             
                 
                 footerDivider
                 
-                HStack(alignment: .center, spacing: 12) {
-                    Text(listing.publishedLine)
-                        .font(.caption)
+                HStack(alignment: .center, spacing: Spacing.sm) {
+                    Text(viewModel.publishedLine)
+                        .font(Typography.published)
                         .foregroundColor(.secondary)
-                    Spacer(minLength: 8)
-                    HStack(spacing: 12) {
-                        ForEach(listing.contactOptions, id: \.self) {type in
+                    Spacer(minLength: Spacing.sm)
+                    HStack(spacing: Spacing.sm) {
+                        ForEach(viewModel.contactOptions, id: \.self) {type in
                             contactButton(for: type)
                         }
 
                     }
                 }
-                .padding(.horizontal, 16)
-                .padding(.top, 4)
-                .padding(.bottom, listing.lastContactedLine == nil ? 16 : 10)
+                .padding(.horizontal, Spacing.lg)
+                .padding(.top, Spacing.xs)
+                .padding(.bottom, viewModel.lastContactedLine == nil ? Spacing.lg : Spacing.sm)
             
 
-            if let line = listing.lastContactedLine {
+            if let line = viewModel.lastContactedLine {
                 lastContactedBanner(text: line)
             }
         }
         .background(Color(.systemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .clipShape(RoundedRectangle(cornerRadius: CornerRadius.large))
         .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color(UIColor.separator).opacity(0.35), lineWidth: 1)
+            RoundedRectangle(cornerRadius: CornerRadius.large)
+                .stroke(Color(UIColor.separator).opacity(Opacity.separator), lineWidth: 1)
         )
-        .shadow(color: Color.black.opacity(0.06), radius: 8, x: 0, y: 4)
+        .shadow(color: Shadow.card, radius: Shadow.cardRadius, x: Shadow.cardOffset.width, y: Shadow.cardOffset.height)
     }
     
     @ViewBuilder
     private func contactButton(for type: ContactType) -> some View {
         switch type {
         case .phone:
-            ContactButton(.phone, action: onPhoneTap)
+            ContactButton(.phone, action: { viewModel.handleContact(type: .phone) })
                 .clipShape(Rectangle())
         case .email:
-            ContactButton(.email, action: onEmailTap)
+            ContactButton(.email, action: { viewModel.handleContact(type: .email) })
                 .clipShape(Rectangle())
         case .whatsApp:
-            ContactButton(.whatsApp, action: onWhatsAppTap)
+            ContactButton(.whatsApp, action: { viewModel.handleContact(type: .whatsApp) })
                 .clipShape(Rectangle())
         case .sms:
-            ContactButton(.whatsApp, action: onSmsTap)
+            ContactButton(.whatsApp, action: { viewModel.handleContact(type: .sms) })
                 .clipShape(Rectangle())
         }
     }
@@ -137,90 +132,78 @@ struct PropertyListingCardView: View {
     private var carouselSection: some View {
         ZStack(alignment: .top) {
             TabView {
-                ForEach(listing.carouselImageNames, id: \.self) { name in
+                ForEach(viewModel.carouselImageNames, id: \.self) { name in
                     Image(name)
                         .resizable()
                         .scaledToFill()
                 }
             }
-            .frame(height: 200)
+            .frame(height: Sizing.carouselHeight)
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
             .clipped()
 
             HStack(alignment: .top) {
-                ForEach(Array(listing.tagLabels.enumerated()), id: \.offset) { _, label in
+                ForEach(Array(viewModel.tagLabels.enumerated()), id: \.offset) { _, label in
                     tagPill(label)
                 }
                 Spacer(minLength: 0)
                 heartButton
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(8)
+            .padding(Spacing.sm)
         }
     }
     
     private func tagPill(_ text: String) -> some View {
-        let isVerified = text == "VERIFIED"
-        return HStack(spacing: 4) {
+        HStack(spacing: Spacing.xs) {
             Text(text)
-                .font(.caption2)
-                .fontWeight(.semibold)
+                .font(Typography.tags)
+                .fontWeight(FontWeights.semibold)
         }
         .foregroundColor(.white)
-        .padding(.horizontal, 8)
-        .padding(.vertical, 4)
-        .background(isVerified ? Color.green : Color.black.opacity(0.55))
-        .clipShape(RoundedRectangle(cornerRadius: 4))
+        .padding(.horizontal, Spacing.sm)
+        .padding(.vertical, Spacing.xs)
+        .background(viewModel.tagBackgroundColor(for: text))
+        .clipShape(RoundedRectangle(cornerRadius: CornerRadius.small))
                         
     }
 
-    private var verifiedPill: some View {
-        Text("VERIFIED")
-            .font(.caption2)
-            .fontWeight(.semibold)
-            .foregroundColor(.white)
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
-            .background(Color.green)
-            .clipShape(RoundedRectangle(cornerRadius: 4))
-    }
-
     private var heartButton: some View {
-        Button(action: onHeartTap) {
-            Image(systemName: isFavourite ? "heart.fill" : "heart")
-                .font(.body.weight(.medium))
+        Button(action: { viewModel.toggleFavourite() }) {
+            Image(systemName: viewModel.isFavourite ? "heart.fill" : "heart")
+                .font(FontSizes.body.weight(FontWeights.medium))
                 .foregroundColor(.white)
-                .frame(width: 36, height: 36)
-                .background(Circle().fill(Color.black.opacity(0.35)))
-                .animation(.spring(response: 0.32, dampingFraction: 0.65), value: isFavourite)
+                .frame(width: Sizing.heartButtonSize, height: Sizing.heartButtonSize)
+                .background(Circle().fill(Color.black.opacity(Opacity.heartBackground)))
+                .animation(.spring(response: 0.32, dampingFraction: 0.65), value: viewModel.isFavourite)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(isFavourite ? "Remove from Favourite" : "Add to Favourite")
+        .accessibilityLabel(viewModel.isFavourite ? Accessibility.removeFromFavourite : Accessibility.addToFavourite)
     }
 
     private var deliveryChip: some View {
-        Text("Delivery: \(String(listing.deliveryYear))")
-            .font(.caption)
+        Text("\(Copy.delivery) \(String(viewModel.deliveryYear))")
+            .font(Typography.metadata)
             .foregroundColor(Color.purple)
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
-            .background(Color.purple.opacity(0.12))
+            .padding(.horizontal, Spacing.sm)
+            .padding(.vertical, Spacing.xs)
+            .background(Color.purple.opacity(Opacity.verifiedBackground))
             .clipShape(Capsule())
     }
 
     private func lastContactedBanner(text: String) -> some View {
-        HStack(spacing: 8) {
+        HStack(spacing: Spacing.sm) {
             Image(systemName: "phone.fill")
-                .font(.caption)
+                .font(Typography.metadata)
             Text(text)
-                .font(.caption)
+                .font(Typography.metadata)
         }
         .foregroundColor(.primary)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
-        .background(Color.yellow.opacity(0.45))
-        .clipShape(RoundedRectangle(cornerRadius: 4))
+        .padding(.horizontal, Spacing.sm)
+        .padding(.vertical, Spacing.sm)
+        .background(Color.yellow.opacity(Opacity.contactBanner))
+        .clipShape(RoundedRectangle(cornerRadius: CornerRadius.small))
     }
 }
 
@@ -241,12 +224,23 @@ struct PropertyListingCardView_Previews: PreviewProvider {
                     lastContactedLine: "Last contacted: 28 Jul 2021",
                     contactOptions: [.phone, .email, .whatsApp]
                 ),
-                isFavourite: false,
-                onHeartTap: {},
-                onPhoneTap: {},
-                onEmailTap: {},
-                onWhatsAppTap: {},
-                onSmsTap: {}
+                viewModel: PropertyListingCardViewModel(
+                    listing: SearchListing(
+                        id: "preview",
+                        carouselImageNames: ["FirstImage", "SecondImage"],
+                        tagLabels: ["VERIFIED", "NEW CONSTRUCTION"],
+                        location: "Dubai",
+                        propertyType: "Apartment",
+                        deliveryYear: 2022,
+                        priceLine: "2,575,000 AED",
+                        unitLine: "Studio · 1 bath · 1356 sqft",
+                        publishedLine: "Published 3 days ago",
+                        lastContactedLine: "Last contacted: 28 Jul 2021",
+                        contactOptions: [.phone, .email, .whatsApp]
+                    ),
+                    favouritesStore: FavouritesStore(),
+                    onContact: { _, _ in }
+                )
             )
             .padding()
             .previewLayout(.sizeThatFits)
@@ -266,12 +260,23 @@ struct PropertyListingCardView_Previews: PreviewProvider {
                     lastContactedLine: "Last contacted: 28 Jul 2021",
                     contactOptions: [.phone, .email, .whatsApp]
                 ),
-                isFavourite: true,
-                onHeartTap: {},
-                onPhoneTap: {},
-                onEmailTap: {},
-                onWhatsAppTap: {},
-                onSmsTap: {}
+                viewModel: PropertyListingCardViewModel(
+                    listing: SearchListing(
+                        id: "preview-fav",
+                        carouselImageNames: ["FirstImage", "SecondImage"],
+                        tagLabels: ["VERIFIED", "NEW CONSTRUCTION"],
+                        location: "Dubai",
+                        propertyType: "Apartment",
+                        deliveryYear: 2022,
+                        priceLine: "2,575,000 AED",
+                        unitLine: "Studio · 1 bath · 1356 sqft",
+                        publishedLine: "Published 3 days ago",
+                        lastContactedLine: "Last contacted: 28 Jul 2021",
+                        contactOptions: [.phone, .email, .whatsApp]
+                    ),
+                    favouritesStore: FavouritesStore(),
+                    onContact: { _, _ in }
+                )
             )
             .padding()
             .previewLayout(.sizeThatFits)

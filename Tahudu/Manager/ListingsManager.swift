@@ -7,7 +7,7 @@ import Combine
 import Foundation
 
 /// Uses Combine only for `@Published` / `ObservableObject` (SwiftUI). Loading uses `async` / `await`.
-final class ListingsManager: ObservableObject {
+final class ListingsManager: ObservableObject, BaseViewModel {
     @Published private(set) var listings: [SearchListing] = []
     @Published private(set) var isLoading = false
     @Published private(set) var errorMessage: String?
@@ -41,5 +41,9 @@ final class ListingsManager: ObservableObject {
                 errorMessage = error.localizedDescription
             }
         }
+    }
+    
+    func clearError() {
+        errorMessage = nil
     }
 }
