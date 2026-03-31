@@ -8,10 +8,12 @@ import Foundation
 import SwiftUI
 
 @MainActor
-final class PropertyListingCardViewModel: ObservableObject {
+final class PropertyListingCardViewModel: ObservableObject, BaseViewModel {
     
     // MARK: - Published Properties
     @Published var isFavourite: Bool
+    @Published private(set) var isLoading = false
+    @Published private(set) var errorMessage: String?
     
     // MARK: - Properties
     private let listing: SearchListing
@@ -70,6 +72,14 @@ final class PropertyListingCardViewModel: ObservableObject {
     }
     
     // MARK: - Public Methods
+    func clearError() {
+        errorMessage = nil
+    }
+    
+    func setError(_ message: String?) {
+        errorMessage = message
+    }
+    
     func toggleFavourite() {
         isFavourite.toggle()
         favouritesStore.toggle(id: listing.id)

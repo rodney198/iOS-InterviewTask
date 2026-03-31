@@ -16,14 +16,30 @@ protocol BaseViewModel: ObservableObject {
     /// Contains any error message that should be displayed to the user
     var errorMessage: String? { get }
     
+    /// Indicates if the ViewModel has an active error
+    var hasError: Bool { get }
+    
     /// Clears any current error message
     func clearError()
+    
+    /// Sets an error message
+    func setError(_ message: String?)
 }
 
 // MARK: - Default Implementation
 extension BaseViewModel {
     func clearError() {
-        // Default implementation - can be overridden by concrete ViewModels
+        // Default implementation - should be overridden by concrete ViewModels
+        // that have @Published errorMessage property
+    }
+    
+    func setError(_ message: String?) {
+        // Default implementation - should be overridden by concrete ViewModels
+        // that have @Published errorMessage property
+    }
+    
+    var hasError: Bool {
+        errorMessage != nil
     }
 }
 

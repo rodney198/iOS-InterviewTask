@@ -133,6 +133,10 @@ final class SearchViewModel: ObservableObject, BaseViewModel {
         errorMessage = nil
     }
     
+    func setError(_ message: String?) {
+        errorMessage = message
+    }
+    
     func retryLoadListings() {
         refreshListings()
     }

@@ -46,4 +46,8 @@ final class ListingsManager: ObservableObject, BaseViewModel {
     func clearError() {
         errorMessage = nil
     }
+    
+    func setError(_ message: String?) {
+        errorMessage = message
+    }
 }
