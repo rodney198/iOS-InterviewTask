@@ -130,7 +130,7 @@ struct PropertyListingCardView: View {
             ContactButton(.whatsApp, action: { viewModel.handleContact(type: .whatsApp) })
                 .clipShape(Rectangle())
         case .sms:
-            ContactButton(.whatsApp, action: { viewModel.handleContact(type: .sms) })
+            ContactButton(.sms, action: { viewModel.handleContact(type: .sms) })
                 .clipShape(Rectangle())
         }
     }
