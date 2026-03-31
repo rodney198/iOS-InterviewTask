@@ -21,7 +21,20 @@ struct SearchListing: Identifiable {
 
 struct PropertyListingCardView: View {
     let listing: SearchListing
-    @ObservedObject var viewModel: PropertyListingCardViewModel
+    @StateObject private var viewModel: PropertyListingCardViewModel
+    
+    // MARK: - Initialization
+    // Using @StateObject ensures each PropertyListingCardView owns its ViewModel
+    init(listing: SearchListing, 
+         favouritesStore: FavouritesStore,
+         onContact: @escaping (String, ContactType) -> Void) {
+        self.listing = listing
+        self._viewModel = StateObject(wrappedValue: PropertyListingCardViewModel(
+            listing: listing,
+            favouritesStore: favouritesStore,
+            onContact: onContact
+        ))
+    }
     
 
     var body: some View {
@@ -195,23 +208,8 @@ struct PropertyListingCardView_Previews: PreviewProvider {
                     lastContactedLine: "Last contacted: 28 Jul 2021",
                     contactOptions: [.phone, .email, .whatsApp]
                 ),
-                viewModel: PropertyListingCardViewModel(
-                    listing: SearchListing(
-                        id: "preview",
-                        carouselImageNames: ["FirstImage", "SecondImage"],
-                        tagLabels: ["VERIFIED", "NEW CONSTRUCTION"],
-                        location: "Dubai",
-                        propertyType: "Apartment",
-                        deliveryYear: 2022,
-                        priceLine: "2,575,000 AED",
-                        unitLine: "Studio · 1 bath · 1356 sqft",
-                        publishedLine: "Published 3 days ago",
-                        lastContactedLine: "Last contacted: 28 Jul 2021",
-                        contactOptions: [.phone, .email, .whatsApp]
-                    ),
-                    favouritesStore: FavouritesStore(),
-                    onContact: { _, _ in }
-                )
+                favouritesStore: FavouritesStore(),
+                onContact: { _, _ in }
             )
             .padding()
             .previewLayout(.sizeThatFits)
@@ -231,23 +229,8 @@ struct PropertyListingCardView_Previews: PreviewProvider {
                     lastContactedLine: "Last contacted: 28 Jul 2021",
                     contactOptions: [.phone, .email, .whatsApp]
                 ),
-                viewModel: PropertyListingCardViewModel(
-                    listing: SearchListing(
-                        id: "preview-fav",
-                        carouselImageNames: ["FirstImage", "SecondImage"],
-                        tagLabels: ["VERIFIED", "NEW CONSTRUCTION"],
-                        location: "Dubai",
-                        propertyType: "Apartment",
-                        deliveryYear: 2022,
-                        priceLine: "2,575,000 AED",
-                        unitLine: "Studio · 1 bath · 1356 sqft",
-                        publishedLine: "Published 3 days ago",
-                        lastContactedLine: "Last contacted: 28 Jul 2021",
-                        contactOptions: [.phone, .email, .whatsApp]
-                    ),
-                    favouritesStore: FavouritesStore(),
-                    onContact: { _, _ in }
-                )
+                favouritesStore: FavouritesStore(),
+                onContact: { _, _ in }
             )
             .padding()
             .previewLayout(.sizeThatFits)

@@ -12,6 +12,8 @@ struct SearchView: View {
         _viewModel = StateObject(wrappedValue: SearchViewModel())
     }
     
+    // MARK: - Performance Notes
+    // - @StateObject ensures ViewModel persists across view updates
 
     var body: some View {
         VStack(spacing: 0) {
@@ -44,13 +46,10 @@ struct SearchView: View {
                             ForEach(viewModel.visibleListings) { listing in
                                 PropertyListingCardView(
                                     listing: listing,
-                                    viewModel: PropertyListingCardViewModel(
-                                        listing: listing,
-                                        favouritesStore: viewModel.favouritesStore,
-                                        onContact: { listingId, type in
-                                            viewModel.handleContact(listingId: listingId, type: type)
-                                        }
-                                    )
+                                    favouritesStore: viewModel.favouritesStore,
+                                    onContact: { listingId, type in
+                                        viewModel.handleContact(listingId: listingId, type: type)
+                                    }
                                 )
                             }
                         }
