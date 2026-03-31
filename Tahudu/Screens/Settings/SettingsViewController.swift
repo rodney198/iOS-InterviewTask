@@ -8,81 +8,10 @@ import UIKit
 
 class SettingsViewController: UITableViewController {
 
-    private enum SettingsAction {
-        case openLanguageSettings
-        case showCountrySelection
-        case showNotification
-        case showAbout
-        case showFeedback
-    }
+    private let viewModel = SettingsViewModel()
 
-    private struct SettingsRow {
-        let accessibilityIdentifier: String
-        let title: String
-        let detail: String?
-        let systemImageName: String
-        let usesValue1Style: Bool
-        let action: SettingsAction
-    }
-
-    //MARK: - Seperate reuse identifier ids to manage cell - so reused cell stays value 1 vs default as intended
     private static let value1ReuseID = SettingsTable.value1ReuseID
     private static let defaultReuseID = SettingsTable.defaultReuseID
-
-    /// Single source of truth for sections, rows, copy, SF Symbols, accessibility IDs, and tap actions.
-    private var tableSections: [[SettingsRow]] {
-        let languageCode = Bundle.main.preferredLocalizations.first
-            ?? Locale.current.languageCode
-            ?? AppStrings.preferredLanguageFallbackCode
-        let languageLabel = Locale.current.localizedString(forLanguageCode: languageCode)
-
-        return [
-            [
-                SettingsRow(
-                    accessibilityIdentifier: Accessibility.settingsCellLanguage,
-                    title: AppStrings.settingsLanguage,
-                    detail: languageLabel,
-                    systemImageName: "textformat",
-                    usesValue1Style: true,
-                    action: .openLanguageSettings
-                ),
-                SettingsRow(
-                    accessibilityIdentifier: Accessibility.settingsCellCountry,
-                    title: AppStrings.settingsCountry,
-                    detail: AppStrings.settingsCountryUAE,
-                    systemImageName: "globe",
-                    usesValue1Style: true,
-                    action: .showCountrySelection
-                ),
-                SettingsRow(
-                    accessibilityIdentifier: Accessibility.settingsCellNotifications,
-                    title: AppStrings.settingsNotifications,
-                    detail: nil,
-                    systemImageName: "app.badge",
-                    usesValue1Style: false,
-                    action: .showNotification
-                ),
-            ],
-            [
-                SettingsRow(
-                    accessibilityIdentifier: Accessibility.settingsCellAbout,
-                    title: AppStrings.settingsAbout,
-                    detail: nil,
-                    systemImageName: "info.circle",
-                    usesValue1Style: false,
-                    action: .showAbout
-                ),
-                SettingsRow(
-                    accessibilityIdentifier: Accessibility.settingsCellFeedback,
-                    title: AppStrings.settingsFeedback,
-                    detail: nil,
-                    systemImageName: "text.bubble",
-                    usesValue1Style: false,
-                    action: .showFeedback
-                ),
-            ],
-        ]
-    }
 
     override func loadView() {
         super.loadView()
@@ -96,15 +25,15 @@ class SettingsViewController: UITableViewController {
     }
 
     override func numberOfSections(in _: UITableView) -> Int {
-        tableSections.count
+        viewModel.tableSections.count
     }
 
     override func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
-        tableSections[section].count
+        viewModel.tableSections[section].count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let row = tableSections[indexPath.section][indexPath.row]
+        let row = viewModel.tableSections[indexPath.section][indexPath.row]
         let identifier = row.usesValue1Style ? Self.value1ReuseID : Self.defaultReuseID
         let style: UITableViewCell.CellStyle = row.usesValue1Style ? .value1 : .default
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier)
@@ -115,8 +44,7 @@ class SettingsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        //MARK: - Using switch we can check which cell is clicked - duplicate indexpath tree removed
-         let action = tableSections[indexPath.section][indexPath.row].action
+        let action = viewModel.tableSections[indexPath.section][indexPath.row].action
         switch action {
         case .openLanguageSettings:
             openSystemSettings()
@@ -131,8 +59,7 @@ class SettingsViewController: UITableViewController {
         }
     }
 
-    //MARK: - Centralized the Repeated line of Code that was in cell for row at
-    private func applyBaseAppearance(to cell: UITableViewCell, for row: SettingsRow) {
+    private func applyBaseAppearance(to cell: UITableViewCell, for row: SettingsViewModel.Row) {
         cell.accessibilityIdentifier = row.accessibilityIdentifier
         cell.backgroundColor = .systemBackground
         cell.selectionStyle = .default

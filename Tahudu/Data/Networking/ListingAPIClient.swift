@@ -18,4 +18,3 @@ final class ListingAPIClient {
         return responseData.listings
     }
 }
-

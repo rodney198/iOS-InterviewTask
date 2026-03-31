@@ -64,6 +64,7 @@ struct SearchView: View {
                     LoadingView()
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(SystemColors.groupedBackground.ignoresSafeArea())
             .onAppear { viewModel.refreshListings() }
         }

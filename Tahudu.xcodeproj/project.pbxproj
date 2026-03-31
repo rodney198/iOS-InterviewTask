@@ -40,6 +40,7 @@
 		FE0D7FD22F763B3D00F28607 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FC72F763B3D00F28607 /* EmptyStateView.swift */; };
 		FE0D7FD32F763B3D00F28607 /* TagPillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FCB2F763B3D00F28607 /* TagPillView.swift */; };
 		FE0D7FD72F7B59FC00F28607 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FD42F7B59FC00F28607 /* AppError.swift */; };
+		A100000626EF162000F863AC /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100000526EF162000F863AC /* SettingsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		FE0D7FCA2F763B3D00F28607 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		FE0D7FCB2F763B3D00F28607 /* TagPillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagPillView.swift; sourceTree = "<group>"; };
 		FE0D7FD42F7B59FC00F28607 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
+		A100000526EF162000F863AC /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,7 +136,7 @@
 				FE0D7FD62F7B59FC00F28607 /* Core */,
 				FE0D7FBE2F7634B700F28607 /* Presentation */,
 				FE0D7FB82F76347E00F28607 /* Utils */,
-				FE0D7FA52F75CA5500F28607 /* Manager */,
+				A100000126EF162000F863AC /* Data */,
 				1F479BD226EF181900F863AC /* Components */,
 				1F479BD026EF17F600F863AC /* Assets */,
 				1F479BCF26EF17EC00F863AC /* Extensions */,
@@ -212,6 +214,7 @@
 			children = (
 				FE0D7F9C2F75B3AF00F28607 /* PropertyListingCardView.swift */,
 				1F479BDC26EF1AD400F863AC /* SearchView.swift */,
+				FE0D7FC12F76381600F28607 /* SearchViewModel.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 			children = (
 				1F479BDE26EF1AE600F863AC /* SettingsView.swift */,
 				1F479BED26F06FDD00F863AC /* SettingsViewController.swift */,
+				A100000526EF162000F863AC /* SettingsViewModel.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -243,15 +247,39 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		FE0D7FA52F75CA5500F28607 /* Manager */ = {
+		A100000126EF162000F863AC /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				A100000226EF162000F863AC /* Networking */,
+				A100000326EF162000F863AC /* Listings */,
+				A100000426EF162000F863AC /* Persistence */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		A100000226EF162000F863AC /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				FE0D7FA42F75CA5500F28607 /* APIManager.swift */,
+				FE0D7FAB2F75CCCF00F28607 /* ListingAPIClient.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		A100000326EF162000F863AC /* Listings */ = {
 			isa = PBXGroup;
 			children = (
 				FE0D7FAF2F75D70B00F28607 /* ListingsManager.swift */,
-				FE0D7FAB2F75CCCF00F28607 /* ListingAPIClient.swift */,
-				FE0D7FA42F75CA5500F28607 /* APIManager.swift */,
+			);
+			path = Listings;
+			sourceTree = "<group>";
+		};
+		A100000426EF162000F863AC /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
 				FE0D7FB12F76231900F28607 /* FavouritesStore.swift */,
 			);
-			path = Manager;
+			path = Persistence;
 			sourceTree = "<group>";
 		};
 		FE0D7FB72F76347E00F28607 /* Constants */ = {
@@ -275,7 +303,6 @@
 		FE0D7FBD2F7634B700F28607 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				FE0D7FC12F76381600F28607 /* SearchViewModel.swift */,
 				FE0D7FBC2F7634B700F28607 /* BaseViewModel.swift */,
 			);
 			path = ViewModels;
@@ -436,6 +463,7 @@
 				FE0D7FA82F75CB9500F28607 /* Listing.swift in Sources */,
 				1F479BEB26EF333800F863AC /* ContactButton.swift in Sources */,
 				1F479BEE26F06FDD00F863AC /* SettingsViewController.swift in Sources */,
+				A100000626EF162000F863AC /* SettingsViewModel.swift in Sources */,
 				FE0D7FA62F75CA5500F28607 /* APIManager.swift in Sources */,
 				FE0D7FBF2F7634B700F28607 /* BaseViewModel.swift in Sources */,
 				FE0D7FAE2F75D1C400F28607 /* ListingFormatting.swift in Sources */,

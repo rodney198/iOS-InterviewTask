@@ -6,8 +6,8 @@
 import Combine
 import Foundation
 
-/// Uses Combine only for `@Published` / `ObservableObject` (SwiftUI). Loading uses `async` / `await`.
-final class ListingsManager: ObservableObject, BaseViewModel {
+/// Fetches listings and publishes state consumed by SearchViewModel (data layer, not a screen ViewModel).
+final class ListingsManager: ObservableObject {
     @Published private(set) var listings: [SearchListing] = []
     @Published private(set) var isLoading = false
     @Published private(set) var errorMessage: String?
@@ -21,10 +21,9 @@ final class ListingsManager: ObservableObject, BaseViewModel {
 
     func refreshListings() {
         fetchTask?.cancel()
+        isLoading = true
+        errorMessage = nil
         fetchTask = Task { @MainActor in
-            isLoading = true
-            errorMessage = nil
-
             defer { isLoading = false }
 
             do {
@@ -49,5 +48,9 @@ final class ListingsManager: ObservableObject, BaseViewModel {
     
     func setError(_ message: String?) {
         errorMessage = message
+    }
+    
+    func setError(_ appError: AppError) {
+        errorMessage = appError.localizedDescription
     }
 }

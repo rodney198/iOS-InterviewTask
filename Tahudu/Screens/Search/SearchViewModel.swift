@@ -3,7 +3,6 @@
 //  Tahudu
 //
 
-
 import Combine
 import Foundation
 import SwiftUI
@@ -11,18 +10,16 @@ import SwiftUI
 @MainActor
 final class SearchViewModel: ObservableObject, BaseViewModel {
     
-    // MARK: - Published Properties
-    @Published private(set) var isLoading = false
-    @Published private(set) var errorMessage: String?
     @Published var searchText = ""
     @Published var showFavouritesOnly = false
     
-    // MARK: - Dependencies
     private let listingsManager: ListingsManager
     let favouritesStore: FavouritesStore
     private var cancellables = Set<AnyCancellable>()
     
-    // MARK: - Computed Properties
+    var isLoading: Bool { listingsManager.isLoading }
+    var errorMessage: String? { listingsManager.errorMessage }
+    
     private var trimmedSearch: String {
         searchText.trimmingCharacters(in: .whitespacesAndNewlines)
     }
@@ -59,8 +56,8 @@ final class SearchViewModel: ObservableObject, BaseViewModel {
     }
     
     var showEmptyState: Bool {
-        !listingsManager.isLoading && 
-        listingsManager.listings.isEmpty && 
+        !listingsManager.isLoading &&
+        listingsManager.listings.isEmpty &&
         listingsManager.errorMessage == nil
     }
     
@@ -68,13 +65,11 @@ final class SearchViewModel: ObservableObject, BaseViewModel {
         listingsManager.isLoading && listingsManager.listings.isEmpty
     }
     
-    // MARK: - Initialization
-    init(listingsManager: ListingsManager = ListingsManager(), 
+    init(listingsManager: ListingsManager = ListingsManager(),
          favouritesStore: FavouritesStore? = nil) {
         self.listingsManager = listingsManager
         self.favouritesStore = favouritesStore ?? FavouritesStore()
         
-        // Subscribe to listings manager updates
         listingsManager.objectWillChange
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
@@ -82,8 +77,7 @@ final class SearchViewModel: ObservableObject, BaseViewModel {
             }
             .store(in: &cancellables)
         
-        // Subscribe to favourites store updates
-        self.favouritesStore.objectWillChange
+        favouritesStore?.objectWillChange
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.objectWillChange.send()
@@ -91,7 +85,6 @@ final class SearchViewModel: ObservableObject, BaseViewModel {
             .store(in: &cancellables)
     }
     
-    // MARK: - Public Methods
     func refreshListings() {
         listingsManager.refreshListings()
     }
@@ -130,11 +123,11 @@ final class SearchViewModel: ObservableObject, BaseViewModel {
     }
     
     func clearError() {
-        errorMessage = nil
+        listingsManager.clearError()
     }
     
     func setError(_ message: String?) {
-        errorMessage = message
+        listingsManager.setError(message)
     }
     
     func retryLoadListings() {
