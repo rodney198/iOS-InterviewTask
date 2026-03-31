@@ -38,8 +38,25 @@ extension BaseViewModel {
         // that have @Published errorMessage property
     }
     
+    func setError(_ error: Error?) {
+        if let error = error {
+            setError(error.localizedDescription)
+        } else {
+            clearError()
+        }
+    }
+    
+    func setError(_ appError: AppError) {
+        setError(appError.localizedDescription)
+    }
+    
     var hasError: Bool {
         errorMessage != nil
+    }
+    
+    /// Indicates if the ViewModel is ready for user interaction
+    var isReady: Bool {
+        !isLoading && !hasError
     }
 }
 

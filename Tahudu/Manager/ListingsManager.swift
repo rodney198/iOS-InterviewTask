@@ -35,10 +35,10 @@ final class ListingsManager: ObservableObject, BaseViewModel {
                 return
             } catch let error as APIError {
                 guard !Task.isCancelled else { return }
-                errorMessage = error.localizedDescription
+                setError(AppError.networkError(error.localizedDescription))
             } catch {
                 guard !Task.isCancelled else { return }
-                errorMessage = error.localizedDescription
+                setError(AppError.unknownError(error.localizedDescription))
             }
         }
     }

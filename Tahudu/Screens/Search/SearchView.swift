@@ -31,6 +31,8 @@ struct SearchView: View {
                         title: AppStrings.noListings,
                         message: AppStrings.noListingsMessage
                     )
+                } else if !viewModel.isReady {
+                    LoadingView()
                 } else {
                     
                     ScrollView {
@@ -98,12 +100,24 @@ struct SearchView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
 
-            ClearableTextField(
-                label: AppStrings.cityAreaBuildingPlaceholder,
-                symbol: "magnifyingglass",
-                text: $viewModel.searchText,
-                onClear: { viewModel.handleSearchClear() }
-            )
+            HStack {
+                if viewModel.isReady {
+                    ClearableTextField(
+                        label: AppStrings.cityAreaBuildingPlaceholder,
+                        symbol: "magnifyingglass",
+                        text: $viewModel.searchText,
+                        onClear: { viewModel.handleSearchClear() }
+                    )
+                } else {
+                    ClearableTextField(
+                        label: AppStrings.cityAreaBuildingPlaceholder,
+                        symbol: "magnifyingglass",
+                        text: $viewModel.searchText,
+                        onClear: { viewModel.handleSearchClear() }
+                    )
+                    .disabled(true)
+                }
+            }
         }
         .padding(.horizontal, Spacing.lg)
         .padding(.top, Spacing.sm)

@@ -40,6 +40,7 @@
 		FE0D7FD12F763B3D00F28607 /* CarouselImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FC52F763B3D00F28607 /* CarouselImageView.swift */; };
 		FE0D7FD22F763B3D00F28607 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FC72F763B3D00F28607 /* EmptyStateView.swift */; };
 		FE0D7FD32F763B3D00F28607 /* TagPillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FCB2F763B3D00F28607 /* TagPillView.swift */; };
+		FE0D7FD72F7B59FC00F28607 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FD42F7B59FC00F28607 /* AppError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		FE0D7FC92F763B3D00F28607 /* FilterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButton.swift; sourceTree = "<group>"; };
 		FE0D7FCA2F763B3D00F28607 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		FE0D7FCB2F763B3D00F28607 /* TagPillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagPillView.swift; sourceTree = "<group>"; };
+		FE0D7FD42F7B59FC00F28607 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 		1F479BA426EF162000F863AC /* Tahudu */ = {
 			isa = PBXGroup;
 			children = (
+				FE0D7FD62F7B59FC00F28607 /* Core */,
 				FE0D7FBE2F7634B700F28607 /* Presentation */,
 				FE0D7FB82F76347E00F28607 /* Utils */,
 				FE0D7FA52F75CA5500F28607 /* Manager */,
@@ -303,6 +306,14 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		FE0D7FD62F7B59FC00F28607 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				FE0D7FD42F7B59FC00F28607 /* AppError.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -414,6 +425,7 @@
 				FE0D7FAC2F75CCCF00F28607 /* ListingAPIClient.swift in Sources */,
 				FE0D7FC22F76381600F28607 /* PropertyListingCardViewModel.swift in Sources */,
 				FE0D7FC32F76381600F28607 /* SearchViewModel.swift in Sources */,
+				FE0D7FD72F7B59FC00F28607 /* AppError.swift in Sources */,
 				FE0D7FB92F76347E00F28607 /* DesignConstants.swift in Sources */,
 				FE0D7FBA2F76347E00F28607 /* AppConstants.swift in Sources */,
 				FE0D7FBB2F76347E00F28607 /* FontConstants.swift in Sources */,
