@@ -41,6 +41,7 @@
 		FE0D7FD32F763B3D00F28607 /* TagPillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FCB2F763B3D00F28607 /* TagPillView.swift */; };
 		FE0D7FD72F7B59FC00F28607 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FD42F7B59FC00F28607 /* AppError.swift */; };
 		A100000626EF162000F863AC /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100000526EF162000F863AC /* SettingsViewModel.swift */; };
+		A100000826EF162000F863AC /* SearchListing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100000726EF162000F863AC /* SearchListing.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,7 @@
 		FE0D7FCB2F763B3D00F28607 /* TagPillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagPillView.swift; sourceTree = "<group>"; };
 		FE0D7FD42F7B59FC00F28607 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		A100000526EF162000F863AC /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		A100000726EF162000F863AC /* SearchListing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListing.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -243,6 +245,7 @@
 				FE0D7FAD2F75D1C400F28607 /* ListingFormatting.swift */,
 				1F566C072729641D000D4E93 /* ContactType.swift */,
 				FE0D7FA72F75CB9500F28607 /* Listing.swift */,
+				A100000726EF162000F863AC /* SearchListing.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -467,6 +470,7 @@
 				FE0D7FA62F75CA5500F28607 /* APIManager.swift in Sources */,
 				FE0D7FBF2F7634B700F28607 /* BaseViewModel.swift in Sources */,
 				FE0D7FAE2F75D1C400F28607 /* ListingFormatting.swift in Sources */,
+				A100000826EF162000F863AC /* SearchListing.swift in Sources */,
 				FE0D7F9D2F75B3AF00F28607 /* PropertyListingCardView.swift in Sources */,
 				1F566C0927296594000D4E93 /* Image.swift in Sources */,
 			);

@@ -5,15 +5,15 @@
 
 import SwiftUI
 
-struct CarouselImageView: View {
+struct CarouselImageView<Overlay: View>: View {
     let imageNames: [String]
-    let overlayContent: AnyView?
-    
-    init(imageNames: [String], overlayContent: AnyView? = nil) {
+    private let overlay: () -> Overlay
+
+    init(imageNames: [String], @ViewBuilder overlay: @escaping () -> Overlay) {
         self.imageNames = imageNames
-        self.overlayContent = overlayContent
+        self.overlay = overlay
     }
-    
+
     var body: some View {
         ZStack(alignment: .top) {
             TabView {
@@ -26,30 +26,31 @@ struct CarouselImageView: View {
             .frame(height: Sizing.carouselHeight)
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
             .clipped()
-            
-            if let overlay = overlayContent {
-                overlay
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(Spacing.sm)
-            }
+
+            overlay()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(Spacing.sm)
         }
+    }
+}
+
+extension CarouselImageView where Overlay == EmptyView {
+    init(imageNames: [String]) {
+        self.init(imageNames: imageNames) { EmptyView() }
     }
 }
 
 #Preview {
     VStack(spacing: Spacing.lg) {
         CarouselImageView(imageNames: ["FirstImage", "SecondImage"])
-        
-        CarouselImageView(
-            imageNames: ["FirstImage", "SecondImage"],
-            overlayContent: AnyView(
-                HStack {
-                    TagPillView(text: "VERIFIED", backgroundColor: .green)
-                    Spacer()
-                    FilterButton(systemName: "heart") { }
-                }
-            )
-        )
+
+        CarouselImageView(imageNames: ["FirstImage", "SecondImage"]) {
+            HStack {
+                TagPillView(text: "VERIFIED", backgroundColor: .green)
+                Spacer()
+                FilterButton(systemName: "heart") { }
+            }
+        }
     }
     .padding()
 }

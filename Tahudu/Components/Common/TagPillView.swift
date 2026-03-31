@@ -18,7 +18,6 @@ struct TagPillView: View {
         HStack(spacing: Spacing.xs) {
             Text(text)
                 .font(Typography.tags)
-                .fontWeight(FontWeights.semibold)
         }
         .foregroundColor(.white)
         .padding(.horizontal, Spacing.sm)

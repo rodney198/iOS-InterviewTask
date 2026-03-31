@@ -5,26 +5,6 @@
 
 import SwiftUI
 
-struct SearchListing: Identifiable {
-    let id: String
-    let carouselImageNames: [String]
-    let tagLabels: [String]
-    let location: String
-    let propertyType: String
-    let deliveryYear: Int
-    let priceLine: String
-    let unitLine: String
-    let publishedLine: String
-    let lastContactedLine: String?
-    let contactOptions: [ContactType]
-}
-
-extension SearchListing {
-    func tagBackgroundColor(for tag: String) -> Color {
-        tag == AppStrings.verified ? .green : Color.black.opacity(Opacity.overlay)
-    }
-}
-
 struct PropertyListingCardView: View {
     let listing: SearchListing
     @ObservedObject private var favouritesStore: FavouritesStore
@@ -46,7 +26,7 @@ struct PropertyListingCardView: View {
         VStack(alignment: .leading) {
             carouselSection
 
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: Spacing.md) {
                 HStack(alignment: .center, spacing: Spacing.sm) {
                     Text(listing.propertyType)
                         .font(Typography.metadata)
@@ -140,21 +120,18 @@ struct PropertyListingCardView: View {
     }
 
     private var carouselSection: some View {
-        CarouselImageView(
-            imageNames: listing.carouselImageNames,
-            overlayContent: AnyView(
-                HStack(alignment: .top) {
-                    ForEach(Array(listing.tagLabels.enumerated()), id: \.offset) { _, label in
-                        TagPillView(
-                            text: label,
-                            backgroundColor: listing.tagBackgroundColor(for: label)
-                        )
-                    }
-                    Spacer(minLength: 0)
-                    heartButton
+        CarouselImageView(imageNames: listing.carouselImageNames) {
+            HStack(alignment: .top) {
+                ForEach(Array(listing.tagLabels.enumerated()), id: \.offset) { _, label in
+                    TagPillView(
+                        text: label,
+                        backgroundColor: listing.tagBackgroundColor(for: label)
+                    )
                 }
-            )
-        )
+                Spacer(minLength: 0)
+                heartButton
+            }
+        }
     }
 
     private var heartButton: some View {
@@ -181,7 +158,7 @@ struct PropertyListingCardView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, Spacing.sm)
         .padding(.vertical, Spacing.sm)
-        .background(Color.yellow.opacity(Opacity.contactBanner))
+        .background(Color.lastContactedBannerBackground)
         .clipShape(RoundedRectangle(cornerRadius: CornerRadius.small))
     }
 }

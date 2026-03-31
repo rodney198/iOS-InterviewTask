@@ -5,6 +5,10 @@
 
 import SwiftUI
 
+private enum SearchListScrollAnchor {
+    static let top = "searchListTop"
+}
+
 struct SearchView: View {
     @StateObject private var viewModel: SearchViewModel
     
@@ -31,37 +35,47 @@ struct SearchView: View {
                         title: AppStrings.noListings,
                         message: AppStrings.noListingsMessage
                     )
-                } else if !viewModel.isReady {
+                } else if viewModel.showLoading {
                     LoadingView()
+                } else if viewModel.showErrorWithNoListings {
+                    Color.clear
                 } else {
-                    
-                    ScrollView {
-                        LazyVStack(spacing: 16) {
-                            if let message = viewModel.noResultsMessage {
-                                Text(message)
-                                    .font(Typography.emptyStateMessage)
-                                    .multilineTextAlignment(.center)
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.top, 24)
+                    ScrollViewReader { proxy in
+                        ScrollView {
+                            LazyVStack(spacing: Spacing.lg) {
+                                Color.clear
+                                    .frame(height: 0)
+                                    .id(SearchListScrollAnchor.top)
+
+                                if let message = viewModel.noResultsMessage {
+                                    Text(message)
+                                        .font(Typography.emptyStateMessage)
+                                        .multilineTextAlignment(.center)
+                                        .frame(maxWidth: .infinity)
+                                        .padding(.top, Spacing.xxl)
+                                }
+
+                                ForEach(viewModel.visibleListings) { listing in
+                                    PropertyListingCardView(
+                                        listing: listing,
+                                        favouritesStore: viewModel.favouritesStore,
+                                        onContact: { listingId, type in
+                                            viewModel.handleContact(listingId: listingId, type: type)
+                                        }
+                                    )
+                                }
                             }
-                            
-                            ForEach(viewModel.visibleListings) { listing in
-                                PropertyListingCardView(
-                                    listing: listing,
-                                    favouritesStore: viewModel.favouritesStore,
-                                    onContact: { listingId, type in
-                                        viewModel.handleContact(listingId: listingId, type: type)
-                                    }
-                                )
+                            .padding(.horizontal, Spacing.lg)
+                            .padding(.vertical, Spacing.lg)
+                        }
+                        .onChange(of: viewModel.showFavouritesOnly) { _ in
+                            DispatchQueue.main.async {
+                                withAnimation(.easeOut(duration: 0.2)) {
+                                    proxy.scrollTo(SearchListScrollAnchor.top, anchor: .top)
+                                }
                             }
                         }
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 16)
                     }
-                }
-                
-                if viewModel.showLoading {
-                    LoadingView()
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -71,7 +85,7 @@ struct SearchView: View {
     }
 
     private var searchHeader: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: Spacing.md) {
             HStack(spacing: Spacing.md) {
                 FilterButton(systemName: "line.3.horizontal.decrease.circle") {
                     viewModel.handleFilterTap()
@@ -102,22 +116,13 @@ struct SearchView: View {
         }
 
             HStack {
-                if viewModel.isReady {
-                    ClearableTextField(
-                        label: AppStrings.cityAreaBuildingPlaceholder,
-                        symbol: "magnifyingglass",
-                        text: $viewModel.searchText,
-                        onClear: { viewModel.handleSearchClear() }
-                    )
-                } else {
-                    ClearableTextField(
-                        label: AppStrings.cityAreaBuildingPlaceholder,
-                        symbol: "magnifyingglass",
-                        text: $viewModel.searchText,
-                        onClear: { viewModel.handleSearchClear() }
-                    )
-                    .disabled(true)
-                }
+                ClearableTextField(
+                    label: AppStrings.cityAreaBuildingPlaceholder,
+                    symbol: "magnifyingglass",
+                    text: $viewModel.searchText,
+                    onClear: { viewModel.handleSearchClear() }
+                )
+                .disabled(!viewModel.isReady)
             }
         }
         .padding(.horizontal, Spacing.lg)

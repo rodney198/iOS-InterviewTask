@@ -35,7 +35,6 @@ struct Accessibility {
 struct SettingsTable {
     static let value1ReuseID = "SettingsCellValue1"
     static let defaultReuseID = "SettingsCellDefault"
-    static let registeredCellID = "SettingsCell"
 }
 
 // MARK: - App strings

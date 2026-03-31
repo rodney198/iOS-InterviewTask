@@ -13,6 +13,12 @@ extension UIColor {
     static let error = UIColor.systemRed
     static let success = UIColor.systemGreen
 
+    /// Listing card “last contacted” banner; adapts for light/dark.
+    static let lastContactedBannerBackground = UIColor { traits in
+        let alpha = traits.userInterfaceStyle == .dark ? 0.28 : CGFloat(Opacity.contactBanner)
+        return UIColor.systemYellow.withAlphaComponent(alpha)
+    }
+
     // MARK: Social Media
 
     static let whatsApp = UIColor(named: "WhatsApp") ?? UIColor.systemGreen
@@ -25,6 +31,8 @@ extension Color {
     // MARK: Status Colors
     static let error = Color(.systemRed)
     static let success = Color(.systemGreen)
+
+    static let lastContactedBannerBackground = Color(UIColor.lastContactedBannerBackground)
 
     // MARK: Social Media
 

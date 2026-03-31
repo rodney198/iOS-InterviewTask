@@ -6,6 +6,26 @@
 import Foundation
 import UIKit
 
+private final class SettingsValue1Cell: UITableViewCell {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: .value1, reuseIdentifier: reuseIdentifier)
+    }
+
+    required init?(coder: NSCoder) {
+        nil
+    }
+}
+
+private final class SettingsDefaultCell: UITableViewCell {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
+    }
+
+    required init?(coder: NSCoder) {
+        nil
+    }
+}
+
 class SettingsViewController: UITableViewController {
 
     private let viewModel = SettingsViewModel()
@@ -21,7 +41,8 @@ class SettingsViewController: UITableViewController {
         tableView.backgroundColor = .systemGroupedBackground
         tableView.tableFooterView = UIView()
 
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: SettingsTable.registeredCellID)
+        tableView.register(SettingsValue1Cell.self, forCellReuseIdentifier: Self.value1ReuseID)
+        tableView.register(SettingsDefaultCell.self, forCellReuseIdentifier: Self.defaultReuseID)
     }
 
     override func numberOfSections(in _: UITableView) -> Int {
@@ -35,9 +56,7 @@ class SettingsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = viewModel.tableSections[indexPath.section][indexPath.row]
         let identifier = row.usesValue1Style ? Self.value1ReuseID : Self.defaultReuseID
-        let style: UITableViewCell.CellStyle = row.usesValue1Style ? .value1 : .default
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifier)
-            ?? UITableViewCell(style: style, reuseIdentifier: identifier)
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         applyBaseAppearance(to: cell, for: row)
         return cell
     }

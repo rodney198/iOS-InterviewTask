@@ -65,10 +65,18 @@ final class SearchViewModel: ObservableObject, BaseViewModel {
         listingsManager.isLoading && listingsManager.listings.isEmpty
     }
     
+    /// Error from last fetch with no rows to show; main area should not use a blocking loader (banner handles retry).
+    var showErrorWithNoListings: Bool {
+        !listingsManager.isLoading &&
+        listingsManager.listings.isEmpty &&
+        listingsManager.errorMessage != nil
+    }
+    
     init(listingsManager: ListingsManager = ListingsManager(),
          favouritesStore: FavouritesStore? = nil) {
         self.listingsManager = listingsManager
-        self.favouritesStore = favouritesStore ?? FavouritesStore()
+        let resolvedFavourites = favouritesStore ?? FavouritesStore()
+        self.favouritesStore = resolvedFavourites
         
         listingsManager.objectWillChange
             .receive(on: DispatchQueue.main)
@@ -77,7 +85,7 @@ final class SearchViewModel: ObservableObject, BaseViewModel {
             }
             .store(in: &cancellables)
         
-        favouritesStore?.objectWillChange
+        resolvedFavourites.objectWillChange
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.objectWillChange.send()

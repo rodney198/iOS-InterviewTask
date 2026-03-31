@@ -47,8 +47,8 @@ final class APIManager: APIManagerProtocol {
         return decoder
     }
     
-    func request<T: Decodable>(_ url: URL, as type: T.Type) async throws-> T {
-        let data : Data
+    func request<T: Decodable>(_ url: URL, as type: T.Type) async throws -> T {
+        let data: Data
         let response: URLResponse
         do {
             (data, response) = try await session.data(from: url)
