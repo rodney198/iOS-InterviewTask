@@ -8,12 +8,12 @@ import SwiftUI
 struct SearchView: View {
     @StateObject private var viewModel: SearchViewModel
     
-    init() {
-        _viewModel = StateObject(wrappedValue: SearchViewModel())
+    init(favouritesStore: FavouritesStore) {
+        _viewModel = StateObject(wrappedValue: SearchViewModel(favouritesStore: favouritesStore))
     }
     
     // MARK: - Performance Notes
-    // - @StateObject ensures ViewModel persists across view updates
+    // - @StateObject keeps SearchViewModel alive for the screen; FavouritesStore is owned above (tab) and injected.
 
     var body: some View {
         VStack(spacing: 0) {
@@ -128,7 +128,7 @@ struct SearchView: View {
 
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchView()
+        SearchView(favouritesStore: FavouritesStore())
             .previewDisplayName("Search")
     }
 }

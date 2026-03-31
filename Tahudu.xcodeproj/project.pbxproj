@@ -31,7 +31,6 @@
 		FE0D7FBA2F76347E00F28607 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FB42F76347E00F28607 /* AppConstants.swift */; };
 		FE0D7FBB2F76347E00F28607 /* FontConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FB62F76347E00F28607 /* FontConstants.swift */; };
 		FE0D7FBF2F7634B700F28607 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FBC2F7634B700F28607 /* BaseViewModel.swift */; };
-		FE0D7FC22F76381600F28607 /* PropertyListingCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FC02F76381600F28607 /* PropertyListingCardViewModel.swift */; };
 		FE0D7FC32F76381600F28607 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FC12F76381600F28607 /* SearchViewModel.swift */; };
 		FE0D7FCD2F763B3D00F28607 /* ErrorBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FC82F763B3D00F28607 /* ErrorBannerView.swift */; };
 		FE0D7FCE2F763B3D00F28607 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0D7FCA2F763B3D00F28607 /* LoadingView.swift */; };
@@ -81,7 +80,6 @@
 		FE0D7FB52F76347E00F28607 /* DesignConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignConstants.swift; sourceTree = "<group>"; };
 		FE0D7FB62F76347E00F28607 /* FontConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontConstants.swift; sourceTree = "<group>"; };
 		FE0D7FBC2F7634B700F28607 /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
-		FE0D7FC02F76381600F28607 /* PropertyListingCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyListingCardViewModel.swift; sourceTree = "<group>"; };
 		FE0D7FC12F76381600F28607 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		FE0D7FC52F763B3D00F28607 /* CarouselImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselImageView.swift; sourceTree = "<group>"; };
 		FE0D7FC62F763B3D00F28607 /* DeliveryChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryChip.swift; sourceTree = "<group>"; };
@@ -277,7 +275,6 @@
 		FE0D7FBD2F7634B700F28607 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				FE0D7FC02F76381600F28607 /* PropertyListingCardViewModel.swift */,
 				FE0D7FC12F76381600F28607 /* SearchViewModel.swift */,
 				FE0D7FBC2F7634B700F28607 /* BaseViewModel.swift */,
 			);
@@ -423,7 +420,6 @@
 				FE0D7FD32F763B3D00F28607 /* TagPillView.swift in Sources */,
 				FE0D7FB22F76231900F28607 /* FavouritesStore.swift in Sources */,
 				FE0D7FAC2F75CCCF00F28607 /* ListingAPIClient.swift in Sources */,
-				FE0D7FC22F76381600F28607 /* PropertyListingCardViewModel.swift in Sources */,
 				FE0D7FC32F76381600F28607 /* SearchViewModel.swift in Sources */,
 				FE0D7FD72F7B59FC00F28607 /* AppError.swift in Sources */,
 				FE0D7FB92F76347E00F28607 /* DesignConstants.swift in Sources */,

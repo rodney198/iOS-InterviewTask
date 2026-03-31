@@ -7,10 +7,11 @@ import SwiftUI
 
 struct TahuduTabView: View {
     @State private var selectedTab = Tabs.search.rawValue
+    @StateObject private var favouritesStore = FavouritesStore()
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            SearchView()
+            SearchView(favouritesStore: favouritesStore)
                 .tag(Tabs.search.rawValue)
                 .tabItem {
                     Label(AppStrings.tabSearch, systemImage: "magnifyingglass")

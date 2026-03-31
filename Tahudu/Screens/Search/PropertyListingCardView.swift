@@ -19,62 +19,62 @@ struct SearchListing: Identifiable {
     let contactOptions: [ContactType]
 }
 
+extension SearchListing {
+    func tagBackgroundColor(for tag: String) -> Color {
+        tag == AppStrings.verified ? .green : Color.black.opacity(Opacity.overlay)
+    }
+}
+
 struct PropertyListingCardView: View {
     let listing: SearchListing
-    @StateObject private var viewModel: PropertyListingCardViewModel
-    
-    // MARK: - Initialization
-    // Using @StateObject ensures each PropertyListingCardView owns its ViewModel
-    init(listing: SearchListing, 
+    @ObservedObject private var favouritesStore: FavouritesStore
+    private let onContact: (String, ContactType) -> Void
+
+    init(listing: SearchListing,
          favouritesStore: FavouritesStore,
          onContact: @escaping (String, ContactType) -> Void) {
         self.listing = listing
-        self._viewModel = StateObject(wrappedValue: PropertyListingCardViewModel(
-            listing: listing,
-            favouritesStore: favouritesStore,
-            onContact: onContact
-        ))
+        self.onContact = onContact
+        _favouritesStore = ObservedObject(wrappedValue: favouritesStore)
     }
-    
+
+    private var isFavourite: Bool {
+        favouritesStore.isFavourite(id: listing.id)
+    }
 
     var body: some View {
-        
         VStack(alignment: .leading) {
             carouselSection
-            
+
             VStack(alignment: .leading, spacing: 12) {
-                
                 HStack(alignment: .center, spacing: Spacing.sm) {
-                    Text(viewModel.propertyType)
+                    Text(listing.propertyType)
                         .font(Typography.metadata)
                         .foregroundColor(.secondary)
-                    DeliveryChip(year: viewModel.deliveryYear)
+                    DeliveryChip(year: listing.deliveryYear)
                 }
-                
-                Text(viewModel.priceLine)
+
+                Text(listing.priceLine)
                     .font(Typography.price)
                     .foregroundColor(.primary)
-                
-                
+
                 HStack(spacing: Spacing.xs) {
                     Image(systemName: "location.fill")
                         .font(Typography.metadata)
                         .foregroundColor(.secondary)
-                    Text(viewModel.location)
+                    Text(listing.location)
                         .font(Typography.location)
                         .foregroundColor(.secondary)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
                 }
-                
-                
-                
+
                 HStack(spacing: Spacing.xs) {
                     Image(systemName: "bed.double.fill")
                         .font(Typography.metadata)
                         .foregroundColor(.secondary)
-                    Text(viewModel.unitLine)
+                    Text(listing.unitLine)
                         .font(Typography.metadata)
                         .foregroundColor(.secondary)
                 }
@@ -83,28 +83,25 @@ struct PropertyListingCardView: View {
             .padding(.horizontal, Spacing.lg)
             .padding(.top, Spacing.md)
             .padding(.bottom, Spacing.md)
-            
-                
-                footerDivider
-                
-                HStack(alignment: .center, spacing: Spacing.sm) {
-                    Text(viewModel.publishedLine)
-                        .font(Typography.published)
-                        .foregroundColor(.secondary)
-                    Spacer(minLength: Spacing.sm)
-                    HStack(spacing: Spacing.sm) {
-                        ForEach(viewModel.contactOptions, id: \.self) {type in
-                            contactButton(for: type)
-                        }
 
+            footerDivider
+
+            HStack(alignment: .center, spacing: Spacing.sm) {
+                Text(listing.publishedLine)
+                    .font(Typography.published)
+                    .foregroundColor(.secondary)
+                Spacer(minLength: Spacing.sm)
+                HStack(spacing: Spacing.sm) {
+                    ForEach(listing.contactOptions, id: \.self) { type in
+                        contactButton(for: type)
                     }
                 }
-                .padding(.horizontal, Spacing.lg)
-                .padding(.top, Spacing.xs)
-                .padding(.bottom, viewModel.lastContactedLine == nil ? Spacing.lg : Spacing.sm)
-            
+            }
+            .padding(.horizontal, Spacing.lg)
+            .padding(.top, Spacing.xs)
+            .padding(.bottom, listing.lastContactedLine == nil ? Spacing.lg : Spacing.sm)
 
-            if let line = viewModel.lastContactedLine {
+            if let line = listing.lastContactedLine {
                 lastContactedBanner(text: line)
             }
         }
@@ -116,21 +113,21 @@ struct PropertyListingCardView: View {
         )
         .shadow(color: Shadow.card, radius: Shadow.cardRadius, x: Shadow.cardOffset.width, y: Shadow.cardOffset.height)
     }
-    
+
     @ViewBuilder
     private func contactButton(for type: ContactType) -> some View {
         switch type {
         case .phone:
-            ContactButton(.phone, action: { viewModel.handleContact(type: .phone) })
+            ContactButton(.phone, action: { onContact(listing.id, .phone) })
                 .clipShape(Rectangle())
         case .email:
-            ContactButton(.email, action: { viewModel.handleContact(type: .email) })
+            ContactButton(.email, action: { onContact(listing.id, .email) })
                 .clipShape(Rectangle())
         case .whatsApp:
-            ContactButton(.whatsApp, action: { viewModel.handleContact(type: .whatsApp) })
+            ContactButton(.whatsApp, action: { onContact(listing.id, .whatsApp) })
                 .clipShape(Rectangle())
         case .sms:
-            ContactButton(.sms, action: { viewModel.handleContact(type: .sms) })
+            ContactButton(.sms, action: { onContact(listing.id, .sms) })
                 .clipShape(Rectangle())
         }
     }
@@ -144,13 +141,13 @@ struct PropertyListingCardView: View {
 
     private var carouselSection: some View {
         CarouselImageView(
-            imageNames: viewModel.carouselImageNames,
+            imageNames: listing.carouselImageNames,
             overlayContent: AnyView(
                 HStack(alignment: .top) {
-                    ForEach(Array(viewModel.tagLabels.enumerated()), id: \.offset) { _, label in
+                    ForEach(Array(listing.tagLabels.enumerated()), id: \.offset) { _, label in
                         TagPillView(
                             text: label,
-                            backgroundColor: viewModel.tagBackgroundColor(for: label)
+                            backgroundColor: listing.tagBackgroundColor(for: label)
                         )
                     }
                     Spacer(minLength: 0)
@@ -159,21 +156,19 @@ struct PropertyListingCardView: View {
             )
         )
     }
-    
 
     private var heartButton: some View {
-        Button(action: { viewModel.toggleFavourite() }) {
-            Image(systemName: viewModel.isFavourite ? "heart.fill" : "heart")
+        Button(action: { favouritesStore.toggle(id: listing.id) }) {
+            Image(systemName: isFavourite ? "heart.fill" : "heart")
                 .font(FontSizes.body.weight(FontWeights.medium))
                 .foregroundColor(.white)
                 .frame(width: Sizing.heartButtonSize, height: Sizing.heartButtonSize)
                 .background(Circle().fill(Color.black.opacity(Opacity.heartBackground)))
-                .animation(.spring(response: 0.32, dampingFraction: 0.65), value: viewModel.isFavourite)
+                .animation(.spring(response: 0.32, dampingFraction: 0.65), value: isFavourite)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(viewModel.isFavourite ? Accessibility.removeFromFavourite : Accessibility.addToFavourite)
+        .accessibilityLabel(isFavourite ? Accessibility.removeFromFavourite : Accessibility.addToFavourite)
     }
-
 
     private func lastContactedBanner(text: String) -> some View {
         HStack(spacing: Spacing.sm) {
